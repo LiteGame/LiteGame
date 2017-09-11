@@ -1,4 +1,4 @@
-package src.main.java.Game;
+package src.main.java.game;
 
 public class Launcher {
 }
