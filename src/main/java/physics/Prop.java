@@ -16,19 +16,40 @@ public class Prop {
         this.position = position;
     }
 
+    public Vec2d getPosition() {
+        return position;
+    }
+
     public void tick() {
-        // TODO: Gravity calculations
+        double v = this.velocity.getMagnitude();
+        if(v > 0) {
+            applyDrag();
+            applyFriction();
+        }
+        applyVelocity();
+    }
+
+    public void applyGravity() {
         double gravity = environment.getGravity();
         this.applyForce(new Vec2d(0,gravity*mass));
-        // TODO: Drag calculations
+    }
 
-        // TODO: Friction calculations
-        
+    public void applyDrag() {
+        double dragForce = environment.getDrag() * Math.pow(this.velocity.getMagnitude(),2)/2;
+        applyForce(this.velocity.scale(-dragForce));
+    }
 
+    public void applyFriction() {
+        double frictionForce = environment.getFriction() * this.mass;
+        applyForce(this.velocity.scale(-frictionForce));
+    }
+
+    public void applyVelocity() {
+        this.position = this.position.plus(this.velocity);
     }
 
     public void applyForce(Vec2d force) {
         // a = F / m
-        this.velocity.plus(force.scale(1.0/this.mass));
+        this.velocity.plus(force.scale(1.0/this.mass).scale(1.0/environment.TICKRATE));
     }
 }
