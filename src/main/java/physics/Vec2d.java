@@ -35,6 +35,13 @@ public class Vec2d {
         return a.x*b.x + a.y*b.y;
     }
 
+    public Vec2d round(int decimals) {
+        double shift = Math.pow(10.0,decimals);
+        double rx = Math.round(this.x * shift) / shift;
+        double ry = Math.round(this.y * shift) / shift;
+        return new Vec2d(rx,ry);
+    }
+
     public Vec2d scale(double factor) {
         return new Vec2d(this.x*factor, this.y*factor);
     }
