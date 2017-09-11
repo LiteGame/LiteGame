@@ -1,4 +1,4 @@
-package src.main.java.physics;
+package physics;
 
 /**
  * Created by JoeyH on 2017-09-11.
