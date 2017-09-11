@@ -8,19 +8,25 @@ public class Prop {
 
     private Vec2d position;
     private Vec2d velocity;
-    private double mass = 0;
+    private double mass = 1;
 
     public Prop(Environment e, Vec2d position, double mass) {
         this.environment = e;
         this.velocity = new Vec2d(0,0);
         this.position = position;
+        this.mass = mass;
     }
 
     public Vec2d getPosition() {
         return position;
     }
 
+    public Vec2d getVelocity() {
+        return velocity;
+    }
+
     public void tick() {
+        applyGravity();
         double v = this.velocity.getMagnitude();
         if(v > 0) {
             applyDrag();
@@ -50,6 +56,6 @@ public class Prop {
 
     public void applyForce(Vec2d force) {
         // a = F / m
-        this.velocity.plus(force.scale(1.0/this.mass).scale(1.0/environment.TICKRATE));
+        this.velocity = this.velocity.plus(force.scale(1.0/this.mass).scale(1.0/environment.TICKRATE)).round(4);
     }
 }

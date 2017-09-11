@@ -47,6 +47,14 @@ public class Vec2d {
     }
 
     public String toString() {
-        return "(" + x + "," + ")";
+        return "(" + x + "," + y + ")";
+    }
+
+    public boolean equals(Vec2d other) {
+        if(other instanceof Vec2d) {
+           Vec2d that = other;
+           return this.x==that.x && this.y == that.y;
+        }
+        return false;
     }
 }
