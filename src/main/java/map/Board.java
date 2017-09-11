@@ -22,7 +22,7 @@ public class Board extends JPanel implements ActionListener {
     private final int bal_start_y = 520;
     private final int B_WIDTH = 800;
     private final int B_HEIGHT = 600;
-    private final int speed = 15;
+    private final int speed = 16;
 
     public Board() {
 
@@ -112,6 +112,7 @@ public class Board extends JPanel implements ActionListener {
 
         if (tempBall.isVisible()) {
             tempBall.move();
+            System.out.println(tempBall.getBounds());
         }
 
     }
@@ -137,6 +138,7 @@ public class Board extends JPanel implements ActionListener {
 
         if(ballBounds.intersects(launch_area)) {
             tempBall.set_in_start_position(true);
+            tempBall.set_state("Launch");
         }
         else {
             tempBall.set_in_start_position(false);
@@ -148,6 +150,8 @@ public class Board extends JPanel implements ActionListener {
 
         if(ballBounds.intersects(map)) {
             tempBall.gravity(true);
+            tempBall.set_state("Game");
+
         }
 
     }
