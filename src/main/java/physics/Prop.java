@@ -18,10 +18,12 @@ public class Prop {
 
     public void tick() {
         // TODO: Gravity calculations
-
+        double gravity = environment.getGravity();
+        this.applyForce(new Vec2d(0,gravity*mass));
         // TODO: Drag calculations
 
         // TODO: Friction calculations
+        
 
     }
 
