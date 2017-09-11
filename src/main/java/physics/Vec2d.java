@@ -36,7 +36,7 @@ public class Vec2d {
     }
 
     public Vec2d scale(double factor) {
-        return new Vec2d(this.x*factor, this.y*factor)
+        return new Vec2d(this.x*factor, this.y*factor);
     }
 
     public String toString() {
