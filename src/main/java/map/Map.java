@@ -1,4 +1,4 @@
-package src.main.java.map;
+package map;
 
 public class Map {
 }
