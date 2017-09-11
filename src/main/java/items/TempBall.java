@@ -40,56 +40,58 @@ public class TempBall extends Sprite {
 
         // Boundary box, Jeeeey!
 
-        if (state.equals("Game")) {
-            if (x < 201) {
-                x = 201;
-            }
+        switch (state) {
+            case "Game":
+                if (x < 201) {
+                    x = 201;
+                }
 
-            if (y < 51) {
-                y = 51;
-            }
+                if (y < 51) {
+                    y = 51;
+                }
 
-            if (x > 539) {
-                x = 539;
-            }
+                if (x > 539) {
+                    x = 539;
+                }
 
-            if (y > 489) {
-                y = 489;
-            }
-        }
-        else if (state.equals("Launch")) {
-            if (x < 199) {
-                x = 199;
-            }
+                if (y > 489) {
+                    y = 489;
+                }
+                break;
+            case "Launch":
+                if (x < 199) {
+                    x = 199;
+                }
 
-            if (y < 49) {
-                y = 49;
-            }
+                if (y < 49) {
+                    y = 49;
+                }
 
-            if (x > 589) {
-                x = 589;
-            }
+                if (x > 589) {
+                    x = 589;
+                }
 
-            if (y > 539) {
-                y = 539;
-            }
-        }
-        else {
-            if (x < 1) {
-                x = 1;
-            }
+                if (y > 539) {
+                    y = 539;
+                }
+                break;
+            default:
+                if (x < 1) {
+                    x = 1;
+                }
 
-            if (y < 1) {
-                y = 1;
-            }
+                if (y < 1) {
+                    y = 1;
+                }
 
-            if (x > 789) {
-                x = 789;
-            }
+                if (x > 789) {
+                    x = 789;
+                }
 
-            if (y > 589) {
-                y = 589;
-            }
+                if (y > 589) {
+                    y = 589;
+                }
+                break;
         }
 
     }
