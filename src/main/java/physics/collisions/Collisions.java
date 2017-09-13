@@ -1,4 +1,4 @@
-package src.main.java.physics.collisions;
+package collisions;
 
 public class Collisions {
 }
