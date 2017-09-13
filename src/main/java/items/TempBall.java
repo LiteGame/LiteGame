@@ -4,13 +4,14 @@ import java.awt.event.KeyEvent;
 
 public class TempBall extends Sprite {
 
-    private int dx;
-    private int dy;
+    private float dx;
+    private float dy;
+    private float speed;
     private boolean in_start_position;
     private int ticks = 0;
     private String state = "";
 
-    public TempBall(int x, int y) {
+    public TempBall(float x, float y) {
         super(x, y);
 
         initBall();
@@ -104,6 +105,14 @@ public class TempBall extends Sprite {
         this.state = state;
     }
 
+    public float getMoveAngle() {
+        return (float)Math.toDegrees(Math.atan2(-dx, dy));
+    }
+
+    public float getSpeed() {
+        return (float)Math.sqrt(dx * dx + dy * dy);
+    }
+
     public void gravity(Boolean enable) {
         ticks++;
 
@@ -114,12 +123,25 @@ public class TempBall extends Sprite {
 
     }
 
-    public void bounce(int angle){
-        if(angle == 90){
-            int temp = dx;
+    public void bounce(String angle){
+        if(angle.equals("90")){
+            float temp = dx;
             dx = dy;
             dy = temp;
         }
+        else if(angle.equals("Left wall")){
+            dx = (float)(-dx * 0.9);
+        }
+        else if(angle.equals("Right wall")){
+            dx = (float)(-dx * 0.9);
+        }
+        else if(angle.equals("Bottom wall")){
+            dy = (float)(-dy * 0.9);
+        }
+        else if(angle.equals("Top wall")){
+            dy = (float)(-dy * 0.9);
+        }
+
     }
 
     public void keyPressed(KeyEvent e) {
@@ -127,7 +149,7 @@ public class TempBall extends Sprite {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_SPACE && in_start_position) {
-            dy = -4;
+            dy = -8;
         }
 
     }
