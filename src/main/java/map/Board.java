@@ -11,8 +11,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Line2D;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Area;
+import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
+import java.nio.file.Path;
 
 public class Board extends JPanel implements ActionListener {
 
@@ -26,6 +29,8 @@ public class Board extends JPanel implements ActionListener {
     private final int B_WIDTH = 800;
     private final int B_HEIGHT = 600;
     private final int speed = 8;
+    private Boolean LeftPressed = false;
+
 
     public Board() {
 
@@ -102,7 +107,13 @@ public class Board extends JPanel implements ActionListener {
         g.drawRect(200, 50, 350, 450);
         g.drawRect(550, 500, 50, 50);
         g.drawLine(600, 100, 600, 500);
-        g.drawLine(550, 50, 600, 100);
+
+        Path2D triangle = new Path2D.Float();
+        triangle.moveTo(550, 50);
+        triangle.lineTo(600, 100);
+        triangle.lineTo(600, 50);
+        triangle.closePath();
+        g.draw(triangle);
 
         g.setColor(Color.WHITE);
     }
@@ -164,29 +175,52 @@ public class Board extends JPanel implements ActionListener {
 
     public void checkCollisions() {
 
-        Rectangle2D ballBounds = tempBall.getBounds();
         Rectangle2D map = new Rectangle(200, 50, 350, 500);
         Rectangle2D launch_area = new Rectangle(550, 500, 50, 50);
+        Rectangle2D ball_hack = new Rectangle2D.Float(tempBall.getX(), tempBall.getY(), tempBall.getImage().getHeight(null), tempBall.getImage().getWidth(null));
 
-        Line2D left_wall = new Line2D.Float(201, 50, 201, 500);
-        Line2D right_wall = new Line2D.Float(549, 50, 549, 500);
-        Line2D bottom_wall = new Line2D.Float(201, 499, 549, 499);
-        Line2D top_wall = new Line2D.Float(201, 51, 549, 51);
+        Rectangle2D left_wall = new Rectangle2D.Float(200, 50, 2, 450);
+        Rectangle2D right_wall = new Rectangle2D.Float(548, 50, 2, 450);
+        Rectangle2D bottom_wall = new Rectangle2D.Float(201, 498, 348, 2);
+        Rectangle2D top_wall = new Rectangle2D.Float(202, 50, 348, 2);
 
+        Ellipse2D ballBounds = tempBall.getBounds();
 
-        Rectangle2D ballBounds2D = tempBall.getBounds();
-        Line2D start_line = new Line2D.Float(550, 50, 600, 100);
+        Path2D triangle = new Path2D.Float();
+        triangle.moveTo(550, 50);
+        triangle.lineTo(600, 100);
+        triangle.lineTo(600, 50);
+        triangle.closePath();
 
-        if(left_wall.intersects(ballBounds2D)){
-            tempBall.bounce("Left wall");
+        Path2D FlipperLeft = new Path2D.Float();
+        FlipperLeft.moveTo(flipperLeft.getX(), flipperLeft.getY());
+        FlipperLeft.lineTo(318, 473);
+        FlipperLeft.lineTo(318, 527);
+        FlipperLeft.closePath();
+
+        Path2D InnerFlipperLeft = new Path2D.Float();
+        InnerFlipperLeft.moveTo(flipperLeft.getX() + 5, flipperLeft.getY());
+        InnerFlipperLeft.lineTo(313, 478);
+        InnerFlipperLeft.lineTo(313, 522);
+        InnerFlipperLeft.closePath();
+
+        if(FlipperLeft.intersects(ball_hack) && InnerFlipperLeft.intersects(ball_hack) && LeftPressed){
+            tempBall.bounce("UP");
         }
-        else if(right_wall.intersects(ballBounds2D)){
-            tempBall.bounce("Right wall");
-        }
-        else if(bottom_wall.intersects(ballBounds2D)){
+        else if(FlipperLeft.intersects(ball_hack) && LeftPressed){
             tempBall.bounce("Bottom wall");
         }
-        else if(top_wall.intersects(ballBounds2D)){
+
+        if(ballBounds.intersects(left_wall)){
+            tempBall.bounce("Left wall");
+        }
+        else if(ballBounds.intersects(right_wall)){
+            tempBall.bounce("Right wall");
+        }
+        else if(ballBounds.intersects(bottom_wall)){
+            tempBall.bounce("Bottom wall");
+        }
+        else if(ballBounds.intersects(top_wall)){
             tempBall.bounce("Top wall");
         }
 
@@ -199,7 +233,7 @@ public class Board extends JPanel implements ActionListener {
             tempBall.set_in_start_position(false);
         }
 
-        if(start_line.intersects(ballBounds2D)) {
+        if(triangle.intersects(ball_hack)) {
             tempBall.bounce("90");
         }
 
@@ -214,6 +248,10 @@ public class Board extends JPanel implements ActionListener {
 
         @Override
         public void keyPressed(KeyEvent e) {
+            int key = e.getKeyCode();
+            if (key == KeyEvent.VK_LEFT) {
+                LeftPressed = true;
+            }
             tempBall.keyPressed(e);
             flipperLeft.keyPressed(e);
             flipperRight.keyPressed(e);
@@ -221,6 +259,10 @@ public class Board extends JPanel implements ActionListener {
 
         @Override
         public void keyReleased(KeyEvent e) {
+            int key = e.getKeyCode();
+            if (key == KeyEvent.VK_LEFT) {
+                LeftPressed = false;
+            }
             flipperRight.keyReleased(e);
             flipperLeft.keyReleased(e);
         }

@@ -1,6 +1,7 @@
 package items;
 
 import java.awt.Image;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import javax.swing.ImageIcon;
 
@@ -52,7 +53,6 @@ public class Sprite {
         vis = visible;
     }
 
-    public Rectangle2D getBounds() {
-        return new Rectangle2D.Float(x, y, width, height);
+    public Ellipse2D getBounds() {return new Ellipse2D.Float(x, y, width, height);
     }
 }
