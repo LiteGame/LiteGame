@@ -30,6 +30,7 @@ public class Board extends JPanel implements ActionListener {
     private final int B_HEIGHT = 600;
     private final int speed = 8;
     private Boolean LeftPressed = false;
+    private  Boolean RightPressed = false;
 
 
     public Board() {
@@ -48,8 +49,8 @@ public class Board extends JPanel implements ActionListener {
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
 
         tempBall = new TempBall(bal_start_x, bal_start_y);
-        flipperRight = new Flipper_Right(550,500, -195);
-        flipperLeft = new Flipper_Left(200, 500, 15);
+        flipperRight = new Flipper_Right(550,400, -195);
+        flipperLeft = new Flipper_Left(200, 400, 15);
 
         timer = new Timer(speed, this);
         timer.start();
@@ -192,22 +193,48 @@ public class Board extends JPanel implements ActionListener {
         triangle.lineTo(600, 50);
         triangle.closePath();
 
+        /**
+         * Left flipper collision magic.
+         */
         Path2D FlipperLeft = new Path2D.Float();
         FlipperLeft.moveTo(flipperLeft.getX(), flipperLeft.getY());
-        FlipperLeft.lineTo(318, 473);
-        FlipperLeft.lineTo(318, 527);
+        FlipperLeft.lineTo(318, 373);
+        FlipperLeft.lineTo(318, 427);
         FlipperLeft.closePath();
 
         Path2D InnerFlipperLeft = new Path2D.Float();
         InnerFlipperLeft.moveTo(flipperLeft.getX() + 5, flipperLeft.getY());
-        InnerFlipperLeft.lineTo(313, 478);
-        InnerFlipperLeft.lineTo(313, 522);
+        InnerFlipperLeft.lineTo(313, 378);
+        InnerFlipperLeft.lineTo(313, 422);
         InnerFlipperLeft.closePath();
+
+        /**
+         * Right flipper collision magic.
+         */
+
+        Path2D FlipperRight = new Path2D.Float();
+        FlipperRight.moveTo(flipperRight.getX(), flipperRight.getY());
+        FlipperRight.lineTo(435, 373);
+        FlipperRight.lineTo(435, 427);
+        FlipperRight.closePath();
+
+        Path2D InnerFlipperRight = new Path2D.Float();
+        InnerFlipperRight.moveTo(flipperRight.getX() + 5, flipperRight.getY());
+        InnerFlipperRight.lineTo(435, 378);
+        InnerFlipperRight.lineTo(435, 422);
+        InnerFlipperRight.closePath();
 
         if(FlipperLeft.intersects(ball_hack) && InnerFlipperLeft.intersects(ball_hack) && LeftPressed){
             tempBall.bounce("UP");
         }
         else if(FlipperLeft.intersects(ball_hack) && LeftPressed){
+            tempBall.bounce("Bottom wall");
+        }
+
+        if(FlipperRight.intersects(ball_hack) && InnerFlipperRight.intersects(ball_hack) && RightPressed){
+            tempBall.bounce("UP");
+        }
+        else if(FlipperRight.intersects(ball_hack) && RightPressed){
             tempBall.bounce("Bottom wall");
         }
 
@@ -252,6 +279,9 @@ public class Board extends JPanel implements ActionListener {
             if (key == KeyEvent.VK_LEFT) {
                 LeftPressed = true;
             }
+            if (key == KeyEvent.VK_RIGHT) {
+                RightPressed = true;
+            }
             tempBall.keyPressed(e);
             flipperLeft.keyPressed(e);
             flipperRight.keyPressed(e);
@@ -262,6 +292,9 @@ public class Board extends JPanel implements ActionListener {
             int key = e.getKeyCode();
             if (key == KeyEvent.VK_LEFT) {
                 LeftPressed = false;
+            }
+            if (key == KeyEvent.VK_RIGHT) {
+                RightPressed = false;
             }
             flipperRight.keyReleased(e);
             flipperLeft.keyReleased(e);
