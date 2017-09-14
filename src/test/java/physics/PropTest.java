@@ -11,9 +11,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import static org.assertj.core.api.Assertions.assertThat;
-/**
- * Created by JoeyJo0 on 2017-09-11.
- */
+
 @RunWith(MockitoJUnitRunner.class)
 public class PropTest {
 
