@@ -124,22 +124,33 @@ public class TempBall extends Sprite {
     }
 
     public void bounce(String angle){
+
+        System.out.println(angle);
+
         if(angle.equals("90")){
             float temp = dx;
             dx = dy;
             dy = temp;
         }
         else if(angle.equals("Left wall")){
-            dx = (float)(-dx * 0.9);
+            dx = (float)(-dx * 0.95);
+            dy = (float)(dy * 0.95);
         }
         else if(angle.equals("Right wall")){
-            dx = (float)(-dx * 0.9);
+            dx = (float)(-dx * 0.95);
+            dy = (float)(dy * 0.95);
         }
         else if(angle.equals("Bottom wall")){
-            dy = (float)(-dy * 0.9);
+            dx = (float)(dx * 0.95);
+            dy = (float)(-dy * 0.95);
         }
         else if(angle.equals("Top wall")){
-            dy = (float)(-dy * 0.9);
+            dx = (float)(dx * 0.95);
+            dy = (float)(-dy * 0.95);
+        }
+        else if(angle.equals("UP")){
+            dx = (dx * 2);
+            dy = (-dy * 2);
         }
 
     }
