@@ -8,6 +8,27 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class Vec2dTest {
     @Test
+    public void testEqualsFalseX() {
+        Vec2d v1 = new Vec2d(1.0,1.0);
+        Vec2d v2 = new Vec2d(2.0,1.0);
+        Assertions.assertNotEquals(v1,v2);
+    }
+
+    @Test
+    public void testEqualsFalseY() {
+        Vec2d v1 = new Vec2d(1.0,1.0);
+        Vec2d v2 = new Vec2d(1.0,2.0);
+        Assertions.assertNotEquals(v1,v2);
+    }
+
+    @Test
+    public void testEqualsFalse() {
+        Vec2d v1 = new Vec2d(1.0,1.0);
+        Vec2d v2 = new Vec2d(1.0,1.0);
+        Assertions.assertEquals(v1,v2);
+    }
+
+    @Test
     public void testGetPhase() {
         Vec2d v = new Vec2d(0.0, 1.0);
         Assertions.assertEquals(Math.PI/2.0, v.getPhase());
@@ -23,7 +44,8 @@ public class Vec2dTest {
     public void testPlus() {
         Vec2d v1 = new Vec2d(1.0,0.0);
         Vec2d v2 = new Vec2d(0.0,1.0);
+        Vec2d ans = v1.plus(v2);
         Vec2d res = new Vec2d(1.0,1.0);
-        Assertions.assertEquals(res,v1.plus(v2));
+        Assertions.assertEquals(res,ans);
     }
 }

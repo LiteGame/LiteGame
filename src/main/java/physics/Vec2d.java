@@ -89,6 +89,7 @@ public class Vec2d {
      * Returns a {@link String} representation of this vector.
      * @return The representation.
      */
+    @Override
     public String toString() {
         return "(" + x + "," + y + ")";
     }
@@ -98,10 +99,11 @@ public class Vec2d {
      * @param other The vector to check equality with.
      * @return True iff the other object is a vector and the x and y of the other object are equal to this vector.
      */
-    public boolean equals(Vec2d other) {
+    @Override
+    public boolean equals(Object other) {
         if(other instanceof Vec2d) {
-           Vec2d that = other;
-           return this.x==that.x && this.y == that.y;
+           Vec2d that = (Vec2d)other;
+           return (this.x==that.x && this.y == that.y);
         }
         return false;
     }
