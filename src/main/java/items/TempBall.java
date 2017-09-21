@@ -26,14 +26,14 @@ public class TempBall extends Sprite {
     public void move() {
 
         // Speed limits, suf!
-
+        /*
         if(dx > 10){
             dx = 10;
         }
         if(dy > 10){
             dy = 10;
         }
-
+        */
         // Actual move
 
         x += dx;
@@ -117,7 +117,7 @@ public class TempBall extends Sprite {
         ticks++;
 
         if(enable && ticks == 8){
-            dy += 1;
+            dy += 0.25;
             ticks = 0;
         }
 
@@ -127,30 +127,32 @@ public class TempBall extends Sprite {
 
         System.out.println(angle);
 
-        if(angle.equals("90")){
-            float temp = dx;
-            dx = dy;
-            dy = temp;
-        }
-        else if(angle.equals("Left wall")){
-            dx = (float)(-dx * 0.95);
-            dy = (float)(dy * 0.95);
-        }
-        else if(angle.equals("Right wall")){
-            dx = (float)(-dx * 0.95);
-            dy = (float)(dy * 0.95);
-        }
-        else if(angle.equals("Bottom wall")){
-            dx = (float)(dx * 0.95);
-            dy = (float)(-dy * 0.95);
-        }
-        else if(angle.equals("Top wall")){
-            dx = (float)(dx * 0.95);
-            dy = (float)(-dy * 0.95);
-        }
-        else if(angle.equals("UP")){
-            dx = (dx * 2);
-            dy = (-dy * 2);
+        switch (angle) {
+            case "90":
+                float temp = dx;
+                dx = dy;
+                dy = temp;
+                break;
+            case "Left wall":
+                dx = (float) (-dx * 0.9);
+                dy = (float) (dy * 0.9);
+                break;
+            case "Right wall":
+                dx = (float) (-dx * 0.9);
+                dy = (float) (dy * 0.9);
+                break;
+            case "Bottom wall":
+                dx = (float) (dx * 0.9);
+                dy = (float) (-dy * 0.9);
+                break;
+            case "Top wall":
+                dx = (float) (dx * 0.9);
+                dy = (float) (-dy * 0.9);
+                break;
+            case "UP":
+                dx = (float) (dx * 1.5  );
+                dy = (float) (-dy * 1.5);
+                break;
         }
 
     }
