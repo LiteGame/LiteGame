@@ -21,21 +21,23 @@
 # IT IS REQUIRED TO DEFINE AT LEAST ONE ATTRIBUTE OF EACH DATA TYPE
 #=======================================================================
 #Example int attributes
-int timeLimit = 60
-int speed = 50
-int amountOfTries = 10
+int startSpeed = 8
+int boardWidth = 800
+int boardHeight = 600
+int balStartX = 570
+int balStartY = 520
 
 #Example real attributes
-real height = 5.5
-real treshold = 4.12
+#real height = 5.5
+#real treshold = 4.12
 
 #Example bool attributes
-bool isHardMode = true
-bool timerActive = false
+#bool isHardMode = true
+#bool timerActive = false
 
 #Example string attributes
-string playerName = Bertus
+#string playerName = Bertus
 
 #Example list attributes
-string colors = [YELLOW, GREEN, PINK, BLACK, ORANGE, BLUE]
-int difficulty = [1,2,3]
+#string colors = [YELLOW, GREEN, PINK, BLACK, ORANGE, BLUE]
+#int difficulty = [1,2,3]
