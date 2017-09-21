@@ -3,6 +3,7 @@ package map;
 import items.Flipper_Left;
 import items.TempBall;
 import items.Flipper_Right;
+import nl.tu.delft.defpro.api.IDefProAPI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,10 +13,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Area;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
-import java.nio.file.Path;
 
 public class Board extends JPanel implements ActionListener {
 
@@ -23,21 +22,44 @@ public class Board extends JPanel implements ActionListener {
     private TempBall tempBall;
     private Flipper_Right flipperRight;
     private Flipper_Left flipperLeft;
-    private boolean ingame;
-    private final int bal_start_x = 570;
-    private final int bal_start_y = 520;
-    private final int B_WIDTH = 800;
-    private final int B_HEIGHT = 600;
-    private final int speed = 8;
     private Boolean LeftPressed = false;
-    private  Boolean RightPressed = false;
+    private Boolean RightPressed = false;
+    private boolean ingame;
+
+    private int balStartX;
+    private int balStartY;
+    private int boardWidth;
+    private int boardHeight;
+    private int balSpeed;
 
 
-    public Board() {
 
+    public Board(IDefProAPI config) {
+
+        initConfig(config);
         initBoard();
 
     }
+
+
+    private void initConfig(IDefProAPI config) {
+        try{
+            balStartX = config.getIntegerValueOf("balStartX");
+            balStartY = config.getIntegerValueOf("balStartY");
+            boardWidth = config.getIntegerValueOf("boardWidth");
+            boardHeight = config.getIntegerValueOf("boardHeight");
+            balSpeed = config.getIntegerValueOf("startSpeed");
+        } catch (Exception e){
+            System.out.println("There was an error loading the config, loading default values:" + e);
+            // Default in case config file fails.
+            balStartX = 570;
+            balStartY = 520;
+            boardWidth = 800;
+            boardHeight = 600;
+            balSpeed = 8;
+        }
+    }
+
 
     private void initBoard() {
 
@@ -46,13 +68,13 @@ public class Board extends JPanel implements ActionListener {
         setBackground(Color.BLACK);
         ingame = true;
 
-        setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
+        setPreferredSize(new Dimension(boardWidth, boardHeight));
 
-        tempBall = new TempBall(bal_start_x, bal_start_y);
+        tempBall = new TempBall(balStartX, balStartY);
         flipperRight = new Flipper_Right(550,400, -195);
         flipperLeft = new Flipper_Left(200, 400, 15);
 
-        timer = new Timer(speed, this);
+        timer = new Timer(balSpeed, this);
         timer.start();
     }
 
@@ -127,8 +149,8 @@ public class Board extends JPanel implements ActionListener {
 
         g.setColor(Color.white);
         g.setFont(small);
-        g.drawString(msg, (B_WIDTH - fm.stringWidth(msg)) / 2,
-                B_HEIGHT / 2);
+        g.drawString(msg, (boardWidth - fm.stringWidth(msg)) / 2,
+                boardHeight / 2);
     }
 
     @Override
