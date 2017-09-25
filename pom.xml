@@ -84,6 +84,14 @@
             <version>${assertj.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>defpro</groupId>
+            <artifactId>nl.tudelft</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/library/DefProAPI_o.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <reporting>
