@@ -3,7 +3,7 @@ package items;
 import java.awt.event.KeyEvent;
 import nl.tu.delft.defpro.api.APIProvider;
 
-public class Flipper_Left extends Sprite {
+public class Flipper_Left extends FlipperSprite {
     private float dx;
     private float dy;
     private float rotation;
@@ -17,7 +17,6 @@ public class Flipper_Left extends Sprite {
     private void initBall() {
 
         loadImage("resources/flipper_left.png");
-        getImageDimensions();
     }
 
     public float getAngle() {
@@ -26,16 +25,16 @@ public class Flipper_Left extends Sprite {
 
     public void move() {
 
-        x += dx;
-        y += dy;
-
-        if (x < 1) {
-            x = 1;
-        }
-
-        if (y < 1) {
-            y = 1;
-        }
+//        x += dx;
+//        y += dy;
+//
+//        if (x < 1) {
+//            x = 1;
+//        }
+//
+//        if (y < 1) {
+//            y = 1;
+//        }
     }
 
     public void keyPressed(KeyEvent e) {

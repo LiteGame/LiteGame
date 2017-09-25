@@ -1,5 +1,8 @@
 package physics;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents a physics environment.
  */
@@ -27,6 +30,8 @@ public class Environment {
      */
     private double drag = 1;
 
+    private List<Prop> props = new ArrayList<Prop>();
+
     public double getGravity() {
         return gravity;
     }
@@ -51,4 +56,17 @@ public class Environment {
         this.drag = drag;
     }
 
+    public void tick() {
+        for(Prop p : props) {
+            p.tick();
+        }
+    }
+
+    public List<Prop> getProps() {
+        return props;
+    }
+
+    public void spawnProp(Prop newProp) {
+        props.add(newProp);
+    }
 }

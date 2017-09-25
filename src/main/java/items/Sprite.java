@@ -5,54 +5,20 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import javax.swing.ImageIcon;
 
-public class Sprite {
+public interface Sprite {
 
-    protected float x;
-    protected float y;
-    protected int width;
-    protected int height;
-    protected boolean vis;
-    protected Image image;
+    void loadImage(String imageName);
 
-    public Sprite(float x, float y) {
+    Image getImage();
 
-        this.x = x;
-        this.y = y;
-        vis = true;
-    }
+    boolean isVisible();
 
-    protected void getImageDimensions() {
+    double getX();
 
-        width = image.getWidth(null);
-        height = image.getHeight(null);
-    }
+    double getY();
 
-    protected void loadImage(String imageName) {
+    void setVisible(Boolean visible);
 
-        ImageIcon ii = new ImageIcon(imageName);
-        image = ii.getImage();
-    }
+    Ellipse2D getBounds();
 
-    public Image getImage() {
-        return image;
-    }
-
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
-    public boolean isVisible() {
-        return vis;
-    }
-
-    public void setVisible(Boolean visible) {
-        vis = visible;
-    }
-
-    public Ellipse2D getBounds() {return new Ellipse2D.Float(x, y, width, height);
-    }
 }
