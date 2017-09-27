@@ -1,6 +1,8 @@
 package physics;
 import items.BallSprite;
 import map.Board;
+
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 
 public class Collisions{
@@ -11,21 +13,23 @@ public class Collisions{
      * This function calculates if there is a collision between a bumper and a ball and calculates the speed after
      * impact accordingly.
      */
-    /**
-     private void checkCollisionBallBumper(Ball ball, Bumper bumper) {
+
+     public static void checkCollisionBallBumper(Ball ball, Ellipse2D bumper) {
          // Set the boost
          boost = 1.3;
+         // This is the position vector of the bumper.
+         Vec2d bumperPosition = new Vec2d(bumper.getCenterX(), bumper.getCenterY());
          // Calculate the distance between the bumper and the ball.
-         Vec2d distanceBallBumper = ball.getPosition() - bumper.getPosition();
+         Vec2d distanceBallBumper = ball.getPosition().minus(bumperPosition);
          // Normalize this vector for the bounce function.
          Vec2d normalVector = distanceBallBumper.scale(1/distanceBallBumper.getMagnitude());
          // If the bumper and ball intersect then we have a collision.
-         if (distanceBallBumper < (ball.getRadius() + bumper.getRadius())) {
+         if (distanceBallBumper.getMagnitude() < (10 + bumper.getWidth() / 2)) {
              // Bounce the ball because of collision.
              bounce(ball, normalVector, boost);
          }
      }
-    */
+
 
     /**
      * This function check collision between the ball and a line. This line can we a wall or a part of the flipper.
@@ -41,7 +45,6 @@ public class Collisions{
         Vec2d a = zerotoBall.minus(zerotoLine);
         // Vector b is the vector that has the same size and direction as the Line2D.
         Vec2d b = new Vec2d(line.getX1() - line.getX2(), line.getY1() - line.getY2());
-        System.out.println(b);
         // bUnit is the unit vector of b.
         Vec2d bUnit = b.scale(1 / b.getMagnitude());
         // This is distance between the line and the ball calculated using vector calculus.

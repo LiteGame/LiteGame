@@ -38,14 +38,7 @@ public class BallSprite implements Sprite {
     }
 
     @Override
-    public double getX() {
-        return ball.getPosition().x;
-    }
-
-    @Override
-    public double getY() {
-        return ball.getPosition().y;
-    }
+    public Vec2d getPosition() { return ball.getPosition(); }
 
     @Override
     public void setVisible(Boolean visible) {

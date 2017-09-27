@@ -2,14 +2,16 @@ package items;
 
 import java.awt.event.KeyEvent;
 import java.security.Key;
+import physics.Vec2d;
 
 public class Flipper_Right extends FlipperSprite {
     private double dx;
     private double dy;
     private double rotation;
+    private Vec2d position;
 
-    public Flipper_Right(float x, float y, double rotation) {
-        super(x, y);
+    public Flipper_Right(Vec2d position, double rotation) {
+        this.position = position;
         this.rotation = rotation;
         initBall();
     }

@@ -1,5 +1,7 @@
 package items;
 
+import physics.Vec2d;
+
 import java.awt.Image;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
@@ -13,9 +15,11 @@ public interface Sprite {
 
     boolean isVisible();
 
-    double getX();
+    Vec2d getPosition();
 
-    double getY();
+    //double getX();
+
+    //double getY();
 
     void setVisible(Boolean visible);
 

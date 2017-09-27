@@ -2,14 +2,16 @@ package items;
 
 import java.awt.event.KeyEvent;
 import nl.tu.delft.defpro.api.APIProvider;
+import physics.Vec2d;
 
 public class Flipper_Left extends FlipperSprite {
     private float dx;
     private float dy;
     private float rotation;
+    private Vec2d position;
 
-    public Flipper_Left(float x, float y, float rotation) {
-        super(x, y);
+    public Flipper_Left(Vec2d position, float rotation) {
+        this.position = position;
         this.rotation = rotation;
         initBall();
     }
