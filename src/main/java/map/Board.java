@@ -78,7 +78,7 @@ public class Board extends JPanel implements ActionListener {
 
         physicsEnvironment = new Environment();
 
-        ground = new Line2D.Double(0,0,800,200);
+        ground = new Line2D.Double(0,590,800,580);
 
         ball = new Ball(physicsEnvironment, new Vec2d(balStartX,balStartY), 10.0);
         ballSprite = new BallSprite(ball);
