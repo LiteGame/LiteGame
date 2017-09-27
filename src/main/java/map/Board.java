@@ -5,6 +5,7 @@ import items.Flipper_Left;
 import items.Flipper_Right;
 import nl.tu.delft.defpro.api.IDefProAPI;
 import physics.Ball;
+import physics.Collisions;
 import physics.Environment;
 import physics.Vec2d;
 
@@ -14,10 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Path2D;
-import java.awt.geom.Rectangle2D;
+import java.awt.geom.*;
 
 public class Board extends JPanel implements ActionListener {
 
@@ -28,8 +26,11 @@ public class Board extends JPanel implements ActionListener {
     private Boolean RightPressed = false;
     private boolean ingame;
 
+    private Ball ball;
+    private Line2D ground;
     private BallSprite ballSprite;
     private Environment physicsEnvironment;
+    private Collisions collisions;
 
     private int balStartX;
     private int balStartY;
@@ -77,7 +78,14 @@ public class Board extends JPanel implements ActionListener {
 
         physicsEnvironment = new Environment();
 
-        ballSprite = new BallSprite(new Ball(physicsEnvironment, new Vec2d(balStartX,balStartY), 10.0));
+        ground = new Line2D.Double(0,0,800,200);
+
+        ball = new Ball(physicsEnvironment, new Vec2d(balStartX,balStartY), 10.0);
+        ballSprite = new BallSprite(ball);
+        ballSprite.loadImage("resources/dot.png");
+        ballSprite.setVisible(true);
+        physicsEnvironment.spawnProp(ball);
+
         flipperRight = new Flipper_Right(550,400, -195);
         flipperLeft = new Flipper_Left(200, 400, 15);
 
@@ -145,6 +153,8 @@ public class Board extends JPanel implements ActionListener {
         triangle.closePath();
         g.draw(triangle);
 
+        g.draw(ground);
+
         g.setColor(Color.WHITE);
     }
 
@@ -166,6 +176,7 @@ public class Board extends JPanel implements ActionListener {
         inGame();
 
         physicsEnvironment.tick();
+        collisions.checkCollisionBallLine(ball, ground);
         updateFlippers();
 
         repaint();
@@ -228,3 +239,4 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 }
+

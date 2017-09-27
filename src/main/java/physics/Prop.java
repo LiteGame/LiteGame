@@ -37,6 +37,8 @@ public class Prop {
         return velocity;
     }
 
+    public void setVelocity(Vec2d velicity) { this.velocity = velicity;}
+
     /**
      * Handles a 'tick'.
      *
