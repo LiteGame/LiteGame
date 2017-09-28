@@ -15,6 +15,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.*;
 import java.awt.geom.Ellipse2D;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 public class Board extends JPanel implements ActionListener {
 
@@ -26,8 +30,9 @@ public class Board extends JPanel implements ActionListener {
     private boolean ingame;
 
     private Ball ball;
-    private Line2D ground;
-    private Ellipse2D bumper;
+
+    private Set<Line2D> lines = new HashSet<>();
+    private Set<Ellipse2D> ellipses = new HashSet<>();
 
     private BallSprite ballSprite;
     private Environment physicsEnvironment;
@@ -79,8 +84,11 @@ public class Board extends JPanel implements ActionListener {
 
         physicsEnvironment = new Environment();
 
-        ground = new Line2D.Double(0,580,800,590);
-        bumper = new Ellipse2D.Double(570,300,100,100);
+        ellipses.add(new Ellipse2D.Double(570,300,100,100));
+        lines.add(new Line2D.Double(0,580,800,590));
+        lines.add(new Line2D.Double(200, 50, 350, 450));
+        lines.add(new Line2D.Double(550, 500, 50, 50));
+        lines.add(new Line2D.Double(600, 100, 600, 500));
 
         ball = new Ball(physicsEnvironment, new Vec2d(balStartX,balStartY), 10.0);
         ballSprite = new BallSprite(ball);
@@ -95,6 +103,13 @@ public class Board extends JPanel implements ActionListener {
         timer.start();
     }
 
+    public Set getLines() {
+        return lines;
+    }
+
+    public Set getEllipses() {
+        return ellipses;
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -144,23 +159,22 @@ public class Board extends JPanel implements ActionListener {
             g.drawImage(flipperLeft.getImage(), trans_left, this);
         }
 
-
-
-        /**
-        g.drawRect(200, 50, 350, 450);
-        g.drawRect(550, 500, 50, 50);
-        g.drawLine(600, 100, 600, 500);
-
         Path2D triangle = new Path2D.Float();
         triangle.moveTo(550, 50);
         triangle.lineTo(600, 100);
         triangle.lineTo(600, 50);
         triangle.closePath();
         g.draw(triangle);
-        */
 
-        g.draw(ground);
-        g.draw(bumper);
+        Iterator<Line2D> iteratorlines = lines.iterator();
+        while(iteratorlines.hasNext()) {
+            g.draw(iteratorlines.next());
+        }
+
+        Iterator<Ellipse2D> iteratorellipses = ellipses.iterator();
+        while(iteratorellipses.hasNext()) {
+            g.draw(iteratorellipses.next());
+        }
 
         g.setColor(Color.WHITE);
     }
@@ -183,8 +197,6 @@ public class Board extends JPanel implements ActionListener {
         inGame();
 
         physicsEnvironment.tick();
-        collisions.checkCollisionBallLine(ball, ground);
-        collisions.checkCollisionBallBumper(ball, bumper);
         updateFlippers();
 
         repaint();
@@ -195,16 +207,6 @@ public class Board extends JPanel implements ActionListener {
         if (!ingame) {
             timer.stop();
         }
-    }
-
-    private void updateBall() {
-
-        if (ballSprite.isVisible()) {
-            //System.out.println(ballSprite.getBounds());
-            //System.out.println(ballSprite.getMoveAngle());
-            //System.out.println(ballSprite.getSpeed());
-        }
-
     }
 
     private void updateFlippers() {
