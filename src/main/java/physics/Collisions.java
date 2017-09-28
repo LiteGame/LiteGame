@@ -73,6 +73,7 @@ public class Collisions{
         Vec2d outgoingVelocity = d.minus(normalVector.scale(dn*2));
         // Set the new velocity of the ball.
         ball.setVelocity(outgoingVelocity.scale(boost));
+        ball.setPosition(ball.getPosition().plus(normalVector.scale(0.1)));
     }
 
 
