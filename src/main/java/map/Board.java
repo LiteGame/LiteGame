@@ -33,6 +33,7 @@ public class Board extends JPanel implements ActionListener {
 
     private Set<Line2D> lines = new HashSet<>();
     private Set<Ellipse2D> ellipses = new HashSet<>();
+    private Set<Arc2D> arcs = new HashSet<>();
 
     private BallSprite ballSprite;
     private Environment physicsEnvironment;
@@ -84,11 +85,15 @@ public class Board extends JPanel implements ActionListener {
 
         physicsEnvironment = new Environment();
 
-        ellipses.add(new Ellipse2D.Double(570,300,100,100));
-        lines.add(new Line2D.Double(0,580,800,590));
-        lines.add(new Line2D.Double(200, 50, 350, 450));
-        lines.add(new Line2D.Double(550, 500, 50, 50));
-        lines.add(new Line2D.Double(600, 100, 600, 500));
+        ellipses.add(new Ellipse2D.Double(350,175,50,50));
+        ellipses.add(new Ellipse2D.Double(325,225,30,30));
+        ellipses.add(new Ellipse2D.Double(333,280,20,20));
+        lines.add(new Line2D.Double(250,500,575,500));
+        lines.add(new Line2D.Double(250, 500, 250, 200));
+        lines.add(new Line2D.Double(550, 500, 550, 200));
+        lines.add(new Line2D.Double(575, 200, 575, 500));
+        arcs.add(new Arc2D.Double(250, 50, 300, 300, 0, 180, Arc2D.OPEN));
+        arcs.add(new Arc2D.Double(225, 50, 350, 300, 0, 90, Arc2D.OPEN));
 
         ball = new Ball(physicsEnvironment, new Vec2d(balStartX,balStartY), 10.0);
         ballSprite = new BallSprite(ball);
@@ -109,6 +114,10 @@ public class Board extends JPanel implements ActionListener {
 
     public Set getEllipses() {
         return ellipses;
+    }
+
+    public Set getArcs() {
+        return arcs;
     }
 
     @Override
@@ -159,13 +168,6 @@ public class Board extends JPanel implements ActionListener {
             g.drawImage(flipperLeft.getImage(), trans_left, this);
         }
 
-        Path2D triangle = new Path2D.Float();
-        triangle.moveTo(550, 50);
-        triangle.lineTo(600, 100);
-        triangle.lineTo(600, 50);
-        triangle.closePath();
-        g.draw(triangle);
-
         Iterator<Line2D> iteratorlines = lines.iterator();
         while(iteratorlines.hasNext()) {
             g.draw(iteratorlines.next());
@@ -174,6 +176,11 @@ public class Board extends JPanel implements ActionListener {
         Iterator<Ellipse2D> iteratorellipses = ellipses.iterator();
         while(iteratorellipses.hasNext()) {
             g.draw(iteratorellipses.next());
+        }
+
+        Iterator<Arc2D> iteratorarcs = arcs.iterator();
+        while(iteratorarcs.hasNext()) {
+            g.draw(iteratorarcs.next());
         }
 
         g.setColor(Color.WHITE);
