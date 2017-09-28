@@ -92,7 +92,8 @@ public class Board extends JPanel implements ActionListener {
         lines.add(new Line2D.Double(250, 500, 250, 200));
         lines.add(new Line2D.Double(550, 500, 550, 200));
         lines.add(new Line2D.Double(575, 200, 575, 500));
-        arcs.add(new Arc2D.Double(250, 50, 300, 300, 0, 180, Arc2D.OPEN));
+        arcs.add(new Arc2D.Double(250, 50, 300, 300, 90, 90, Arc2D.OPEN));
+        arcs.add(new Arc2D.Double(250, 50, 300, 300, 0, 90, Arc2D.OPEN));
         arcs.add(new Arc2D.Double(225, 50, 350, 300, 0, 90, Arc2D.OPEN));
 
         ball = new Ball(physicsEnvironment, new Vec2d(balStartX,balStartY), 10.0);
