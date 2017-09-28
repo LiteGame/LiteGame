@@ -4,6 +4,8 @@ import map.Board;
 
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.util.Iterator;
+import java.util.Set;
 
 public class Collisions{
 
@@ -14,7 +16,7 @@ public class Collisions{
      * impact accordingly.
      */
 
-     public static void checkCollisionBallBumper(Ball ball, Ellipse2D bumper) {
+     private static void checkCollisionBallBumper(Ball ball, Ellipse2D bumper) {
          // Set the boost
          boost = 1.3;
          // This is the position vector of the bumper.
@@ -34,9 +36,9 @@ public class Collisions{
     /**
      * This function check collision between the ball and a line. This line can we a wall or a part of the flipper.
      */
-    public static void checkCollisionBallLine(Ball ball, Line2D line){
+    private static void checkCollisionBallLine(Ball ball, Line2D line){
         // Set the boost
-        boost = 3;
+        boost = 1;
         // Is the vector from the corner of the screen to the middle of the ball.
         Vec2d zerotoBall = ball.getPosition();
         // The vector from the corner of the screen to the edge of the line.
@@ -54,7 +56,7 @@ public class Collisions{
 
         // If the distance between the line and middle of the ball is smaller than the radius, we get a collision.
         // The 10 should be replaced by a getter as this is the radius of the ball.
-        if (distanceBallLine.getMagnitude() < 10) {
+        if (distanceBallLine.getMagnitude() < 10 && bUnit.scale(a.dot(bUnit)).getMagnitude() < b.getMagnitude()) {
             // Bounce the ball because of collision.
             bounce(ball, normalVector, boost);
         }
@@ -72,4 +74,20 @@ public class Collisions{
         // Set the new velocity of the ball.
         ball.setVelocity(outgoingVelocity.scale(boost));
     }
+
+
+    /**
+     * This function iterates through the sets of lines, ellipses and arcs and checks collision.
+     */
+    public static void tick(Ball ball, Set<Line2D> lines, Set<Ellipse2D> ellipses){
+        Iterator<Line2D> iteratorlines = lines.iterator();
+        while(iteratorlines.hasNext()) {
+            checkCollisionBallLine(ball, iteratorlines.next());
+        }
+        Iterator<Ellipse2D> iteratorellipses = ellipses.iterator();
+        while(iteratorellipses.hasNext()) {
+            checkCollisionBallBumper(ball, iteratorellipses.next());
+        }
+    }
+
 }
