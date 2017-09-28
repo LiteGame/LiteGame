@@ -197,6 +197,7 @@ public class Board extends JPanel implements ActionListener {
         inGame();
 
         physicsEnvironment.tick();
+        collisions.tick(ball, lines, ellipses);
         updateFlippers();
 
         repaint();
