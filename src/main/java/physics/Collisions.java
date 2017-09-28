@@ -2,8 +2,10 @@ package physics;
 import items.BallSprite;
 import map.Board;
 
+import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -61,6 +63,20 @@ public class Collisions{
             bounce(ball, normalVector, boost);
         }
     }
+
+    /**
+     *  This function checks for collision between ball and arc.
+     */
+    private static void checkCollisionBallArc(Ball ball, Arc2D arc){
+        Vec2d zerotoBall = ball.getPosition();
+        Rectangle2D arcBounds = arc.getBounds2D();
+        Vec2d zerotoCenterArc = new Vec2d(arcBounds.getCenterX(), arcBounds.getCenterY());
+        Vec2d a = zerotoBall.minus(zerotoCenterArc);
+        if (a.getMagnitude() >  arcBounds.getHeight()){
+            // Collision.
+        }
+    }
+
 
     /**
      * This function bounces the ball given a normal vector
