@@ -94,6 +94,13 @@ public class Vec2d {
         return "(" + x + "," + y + ")";
     }
 
+    @Override
+    public int hashCode() {
+        int a = (int)Math.round(x*10.0);
+        int b = (int)Math.round(y*10.0);
+        return a * 3 + b * 5;
+    }
+
     /**
      * Checks for equality between this vector and another.
      * @param other The vector to check equality with.

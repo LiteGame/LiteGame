@@ -1,4 +1,5 @@
 package physics;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -85,5 +86,25 @@ public class PropTest {
             p.tick();
         }
         assertThat(p.getPosition().equals(initialPos)).isTrue();
+    }
+
+    @Test
+    public void testEqualsFalse() {
+        Prop p1 = new Prop(environment,new Vec2d(1.0,0.0),10);
+        Prop p2 = new Prop(environment,new Vec2d(1.0,1.0),10);
+        Assert.assertNotEquals(p1,p2);
+    }
+
+    @Test
+    public void testEqualsTrue() {
+        Prop p1 = new Prop(environment,new Vec2d(1.0,0.0),10);
+        Prop p2 = new Prop(environment,new Vec2d(1.0,0.0),10);
+        Assert.assertEquals(p1,p2);
+    }
+
+    @Test
+    public void testEqualsSame() {
+        Prop p1 = new Prop(environment,new Vec2d(1.0,0.0),10);
+        Assert.assertEquals(p1,p1);
     }
 }
