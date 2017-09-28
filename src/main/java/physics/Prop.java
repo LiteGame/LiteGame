@@ -96,4 +96,25 @@ public class Prop {
         // a = F / m
         this.velocity = this.velocity.plus(force.scale(1.0/this.mass).scale(1.0/environment.TICKRATE)).round(4);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Prop) {
+            Prop that = (Prop)obj;
+            if(!this.velocity.equals(that.velocity)) {
+                return false;
+            }
+            if(this.mass != that.mass) {
+                return false;
+            }
+            else if(!this.position.equals(that.position)) {
+                return false;
+            }
+            else if(!this.environment.equals(that.environment)) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
 }

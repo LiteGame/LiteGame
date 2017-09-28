@@ -1,6 +1,8 @@
 package map;
 
-import items.*;
+import items.BallSprite;
+import items.Flipper_Left;
+import items.Flipper_Right;
 import nl.tu.delft.defpro.api.IDefProAPI;
 import physics.Ball;
 import physics.Collisions;
@@ -25,8 +27,6 @@ public class Board extends JPanel implements ActionListener {
     private Timer timer;
     private Flipper_Right flipperRight;
     private Flipper_Left flipperLeft;
-    private Boolean LeftPressed = false;
-    private Boolean RightPressed = false;
     private boolean ingame;
 
     private Ball ball;
@@ -43,7 +43,6 @@ public class Board extends JPanel implements ActionListener {
     private int balStartY;
     private int boardWidth;
     private int boardHeight;
-    private int balSpeed;
 
 
 
@@ -61,7 +60,6 @@ public class Board extends JPanel implements ActionListener {
             balStartY = config.getIntegerValueOf("balStartY");
             boardWidth = config.getIntegerValueOf("boardWidth");
             boardHeight = config.getIntegerValueOf("boardHeight");
-            balSpeed = config.getIntegerValueOf("startSpeed");
         } catch (Exception e){
             System.out.println("There was an error loading the config, loading default values:" + e);
             // Default in case config file fails.
@@ -69,7 +67,6 @@ public class Board extends JPanel implements ActionListener {
             balStartY = 520;
             boardWidth = 800;
             boardHeight = 600;
-            balSpeed = 8;
         }
     }
 
@@ -104,8 +101,15 @@ public class Board extends JPanel implements ActionListener {
 
         flipperRight = new Flipper_Right(new Vec2d(550,400), -195);
         flipperLeft = new Flipper_Left(new Vec2d(200, 400), 15);
+        ballSprite = new BallSprite(new Ball(physicsEnvironment, new Vec2d(balStartX,balStartY), 10.0));
+        ballSprite.loadImage("resources/dot.png");
 
-        timer = new Timer(balSpeed, this);
+        physicsEnvironment.spawnProp(ballSprite.getBall());
+        physicsEnvironment.setGravity(0.0);
+        //flipperRight = new Flipper_Right(550,400, -195);
+        //flipperLeft = new Flipper_Left(200, 400, 15);
+
+        timer = new Timer(10, this);
         timer.start();
     }
 
@@ -153,21 +157,21 @@ public class Board extends JPanel implements ActionListener {
             g.drawImage(ballSprite.getImage(), (int) ballSprite.getPosition().x, (int) ballSprite.getPosition().y, this);
         }
 
-        if (flipperRight.isVisible()) {
-            identity_right.translate(flipperRight.getPosition().x, flipperRight.getPosition().y);
-            trans_right.setTransform(identity_right);
-            trans_right.rotate( Math.toRadians(flipperRight.getAngle()) );
-            trans_right.getScaleInstance(1, -1);
-            trans_right.translate(0, -flipperRight.getImage().getHeight(null));
-            g.drawImage(flipperRight.getImage(), trans_right, this);
-        }
-
-        if (flipperLeft.isVisible()) {
-            identity_left.translate(flipperLeft.getPosition().x, flipperLeft.getPosition().y);
-            trans_left.setTransform(identity_left);
-            trans_left.rotate( Math.toRadians(flipperLeft.getAngle()) );
-            g.drawImage(flipperLeft.getImage(), trans_left, this);
-        }
+//        if (flipperRight.isVisible()) {
+//            identity_right.translate(flipperRight.getX(), flipperRight.getY());
+//            trans_right.setTransform(identity_right);
+//            trans_right.rotate( Math.toRadians(flipperRight.getAngle()) );
+//            trans_right.getScaleInstance(1, -1);
+//            trans_right.translate(0, -flipperRight.getImage().getHeight(null));
+//            g.drawImage(flipperRight.getImage(), trans_right, this);
+//        }
+//
+//        if (flipperLeft.isVisible()) {
+//            identity_left.translate(flipperLeft.getX(), flipperLeft.getY());
+//            trans_left.setTransform(identity_left);
+//            trans_left.rotate( Math.toRadians(flipperLeft.getAngle()) );
+//            g.drawImage(flipperLeft.getImage(), trans_left, this);
+//        }
 
         Iterator<Line2D> iteratorlines = lines.iterator();
         while(iteratorlines.hasNext()) {
@@ -206,7 +210,7 @@ public class Board extends JPanel implements ActionListener {
 
         physicsEnvironment.tick();
         collisions.tick(ball, lines, ellipses);
-        updateFlippers();
+        //updateFlippers();
 
         repaint();
     }
@@ -235,27 +239,33 @@ public class Board extends JPanel implements ActionListener {
         public void keyPressed(KeyEvent e) {
             int key = e.getKeyCode();
             if (key == KeyEvent.VK_LEFT) {
-                LeftPressed = true;
+                //LeftPressed = true;
+                physicsEnvironment.applyForceTime(ballSprite.getBall(),new Vec2d(-100.0,0.0),100);
             }
             if (key == KeyEvent.VK_RIGHT) {
-                RightPressed = true;
+                physicsEnvironment.applyForceTime(ballSprite.getBall(),new Vec2d(100.0,0.0),100);
             }
-            flipperLeft.keyPressed(e);
-            flipperRight.keyPressed(e);
+            if (key == KeyEvent.VK_UP) {
+                physicsEnvironment.applyForceTime(ballSprite.getBall(),new Vec2d(0.0,-100.0),100);
+            }
+            if (key == KeyEvent.VK_DOWN) {
+                physicsEnvironment.applyForceTime(ballSprite.getBall(),new Vec2d(0.0,100.0),100);
+            }
+            //flipperLeft.keyPressed(e);
+            //flipperRight.keyPressed(e);
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
             int key = e.getKeyCode();
             if (key == KeyEvent.VK_LEFT) {
-                LeftPressed = false;
+                //LeftPressed = false;
             }
             if (key == KeyEvent.VK_RIGHT) {
-                RightPressed = false;
+                //RightPressed = false;
             }
-            flipperRight.keyReleased(e);
-            flipperLeft.keyReleased(e);
+            //flipperRight.keyReleased(e);
+            //flipperLeft.keyReleased(e);
         }
     }
 }
-

@@ -50,4 +50,6 @@ public class BallSprite implements Sprite {
         return null;
     }
 
+    public Ball getBall() { return ball; }
+
 }
