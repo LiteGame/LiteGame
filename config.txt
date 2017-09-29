@@ -24,8 +24,8 @@
 int startSpeed = 8
 int boardWidth = 800
 int boardHeight = 600
-int balStartX = 275
-int balStartY = 100
+int balStartX = 560
+int balStartY = 450
 
 #Example real attributes
 #real height = 5.5

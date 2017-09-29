@@ -38,7 +38,6 @@ public class Collisions{
          }
      }
 
-
     /**
      * This function check collision between the ball and a line. This line can we a wall or a part of the flipper.
      */
@@ -70,31 +69,37 @@ public class Collisions{
     /**
      *  This function checks for collision between ball and arc.
      */
-    private static void checkCollisionBallArc(Ball ball, Arc2D arc){
-        Vec2d zerotoBall = ball.getPosition().plus(new Vec2d(5,5));
-        Rectangle2D arcBounds = arc.getBounds2D();
-        Vec2d zerotoCenterArc = new Vec2d(arcBounds.getCenterX(), arcBounds.getCenterY());
+    private static void checkCollisionBallArc(Ball ball, Arc2D arc) {
+        Vec2d zerotoBall = ball.getPosition().plus(new Vec2d(5, 5));
+        Vec2d zerotoCenterArc = new Vec2d(arc.getCenterX(), arc.getCenterY());
         Vec2d distanceBallArc = zerotoBall.minus(zerotoCenterArc);
 
         // Calculate the radius of the arc.
-        double angle = distanceBallArc.getPhase();
-        double a = arcBounds.getWidth()/2;
-        double b = arcBounds.getHeight()/2;
-        double radiusEllipse = a*b/Math.sqrt(a*a*Math.sin(angle)*Math.sin(angle) + b*b*Math.cos(angle)*Math.cos(angle));
-
-        //System.out.println(zerotoCenterArc);
+        double angle = -((Math.toDegrees(distanceBallArc.getPhase()) - 360) % 360);
+        double a = arc.getWidth() / 2;
+        double b = arc.getHeight() / 2;
 
         double startAngle = arc.getAngleStart();
         double endAngle = arc.getAngleStart() + arc.getAngleExtent();
 
         // Normal of a ellipse
-        Vec2d normalVector = new Vec2d(b*Math.cos(angle), a*Math.sin(angle)).scale(1/Math.sqrt(a*a*Math.pow(Math.sin(angle), 2) + b*b*Math.pow(Math.cos(angle), 2)));
-        if (distanceBallArc.getMagnitude() >  radiusEllipse){
-            // Collision.
-            //bounce(ball, normalVector);
+        double thetha = distanceBallArc.getPhase();
+        double radiusEllipse = a * b / Math.sqrt(a * a * Math.sin(thetha) * Math.sin(thetha) + b * b * Math.cos(thetha) * Math.cos(thetha));
+        Vec2d normalVector = new Vec2d(b * Math.cos(thetha), a * Math.sin(thetha)).scale(1 / Math.sqrt(a * a * Math.pow(Math.sin(thetha), 2) + b * b * Math.pow(Math.cos(thetha), 2)));
+        // Check if inside the arc.
+        if (distanceBallArc.getMagnitude() < radiusEllipse && arc.containsAngle(angle)) {
+            if (distanceBallArc.getMagnitude() + 5 > radiusEllipse) {
+                // Collision on the inside.
+                bounce(ball, normalVector);
+            }
+        // Else if its on the outside.
+        } else if (distanceBallArc.getMagnitude() > radiusEllipse && arc.containsAngle(angle)) {
+            if (distanceBallArc.getMagnitude() - 5 < radiusEllipse) {
+                // Collision on the outside.
+                bounce(ball, normalVector);
+            }
         }
     }
-
 
     /**
      * This function bounces the ball given a normal vector
@@ -108,8 +113,8 @@ public class Collisions{
         Vec2d normalForce = normalVector.scale(reactionForce.dot(normalVector));
         // Apply the force and let the physics do its magic.
         ball.applyForce(normalForce.scale(2));
+        ball.setPosition(ball.getPosition().plus(normalVector.scale(0.1)));
     }
-
 
     /**
      * This function iterates through the sets of lines, ellipses and arcs and checks collision.
