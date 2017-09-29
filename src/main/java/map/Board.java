@@ -82,16 +82,16 @@ public class Board extends JPanel implements ActionListener {
 
         physicsEnvironment = new Environment();
 
-        ellipses.add(new Ellipse2D.Double(350,175,50,50));
+        ellipses.add(new Ellipse2D.Double(350,175,100,50));
         ellipses.add(new Ellipse2D.Double(325,225,30,30));
         ellipses.add(new Ellipse2D.Double(333,280,20,20));
         lines.add(new Line2D.Double(250,500,575,500));
         lines.add(new Line2D.Double(250, 500, 250, 200));
         lines.add(new Line2D.Double(550, 500, 550, 200));
         lines.add(new Line2D.Double(575, 200, 575, 500));
-        arcs.add(new Arc2D.Double(250, 50, 300, 300, 270, 90, Arc2D.OPEN));
-        arcs.add(new Arc2D.Double(250, 50, 300, 300, 180, 90, Arc2D.OPEN));
-        arcs.add(new Arc2D.Double(225, 50, 350, 300, 0, 90, Arc2D.OPEN));
+        //arcs.add(new Arc2D.Double(250, 50, 300, 300, 270, 90, Arc2D.OPEN));
+        //arcs.add(new Arc2D.Double(250, 50, 300, 300, 180, 90, Arc2D.OPEN));
+        //arcs.add(new Arc2D.Double(225, 50, 350, 300, 0, 180, Arc2D.OPEN));
 
         ball = new Ball(physicsEnvironment, new Vec2d(balStartX,balStartY), 10.0);
         ballSprite = new BallSprite(ball);
@@ -209,7 +209,7 @@ public class Board extends JPanel implements ActionListener {
         inGame();
 
         physicsEnvironment.tick();
-        collisions.tick(ball, lines, ellipses);
+        collisions.tick(ballSprite.getBall(), lines, ellipses, arcs);
         //updateFlippers();
 
         repaint();
@@ -240,16 +240,16 @@ public class Board extends JPanel implements ActionListener {
             int key = e.getKeyCode();
             if (key == KeyEvent.VK_LEFT) {
                 //LeftPressed = true;
-                physicsEnvironment.applyForceTime(ballSprite.getBall(),new Vec2d(-100.0,0.0),100);
+                physicsEnvironment.applyForceTime(ballSprite.getBall(),new Vec2d(-100.0,0.0),10);
             }
             if (key == KeyEvent.VK_RIGHT) {
-                physicsEnvironment.applyForceTime(ballSprite.getBall(),new Vec2d(100.0,0.0),100);
+                physicsEnvironment.applyForceTime(ballSprite.getBall(),new Vec2d(100.0,0.0),10);
             }
             if (key == KeyEvent.VK_UP) {
-                physicsEnvironment.applyForceTime(ballSprite.getBall(),new Vec2d(0.0,-100.0),100);
+                physicsEnvironment.applyForceTime(ballSprite.getBall(),new Vec2d(0.0,-100.0),10);
             }
             if (key == KeyEvent.VK_DOWN) {
-                physicsEnvironment.applyForceTime(ballSprite.getBall(),new Vec2d(0.0,100.0),100);
+                physicsEnvironment.applyForceTime(ballSprite.getBall(),new Vec2d(0.0,100.0),10);
             }
             //flipperLeft.keyPressed(e);
             //flipperRight.keyPressed(e);

@@ -37,6 +37,10 @@ public class Prop {
         return velocity;
     }
 
+    public double getMass() {
+        return mass;
+    }
+
     public void setVelocity(Vec2d velicity) { this.velocity = velicity;}
 
     public void setPosition(Vec2d position) { this.position = position;}
