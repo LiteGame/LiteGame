@@ -23,7 +23,7 @@
 #Example int attributes
 int startSpeed = 8
 int boardWidth = 800
-int boardHeight = 600
+int boardHeight = 1000
 int balStartX = 560
 int balStartY = 450
 

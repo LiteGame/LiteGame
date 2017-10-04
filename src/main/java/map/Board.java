@@ -82,14 +82,28 @@ public class Board extends JPanel implements ActionListener {
 
         physicsEnvironment = new Environment();
 
-        ellipses.add(new Ellipse2D.Double(350,175,100,50));
-        ellipses.add(new Ellipse2D.Double(325,225,30,30));
-        ellipses.add(new Ellipse2D.Double(333,280,20,20));
-        lines.add(new Line2D.Double(250,500,575,500));
-        lines.add(new Line2D.Double(250, 500, 250, 200));
-        lines.add(new Line2D.Double(550, 500, 550, 200));
-        lines.add(new Line2D.Double(575, 200, 575, 500));
-        arcs.add(new Arc2D.Double(250, 50, 325, 300, 0, 180, Arc2D.OPEN));
+        //Bumper left side
+        lines.add(new Line2D.Double(325,625,325,665));
+        lines.add(new Line2D.Double(344.3969,622,360,680));
+        lines.add(new Line2D.Double(325,665,347.5,687.5));
+        arcs.add(new Arc2D.Double(325, 615, 20, 20, 20, 160, Arc2D.OPEN));
+        arcs.add(new Arc2D.Double(345, 675, 15, 15, 35, -180, Arc2D.OPEN));
+
+        //Bumper right side
+        lines.add(new Line2D.Double(525,625,525,665));
+        lines.add(new Line2D.Double(505.6031,622,490,680));
+        lines.add(new Line2D.Double(525,665,502.5,687.5));
+        arcs.add(new Arc2D.Double(505, 615, 20, 20, 160, -160, Arc2D.OPEN));
+        arcs.add(new Arc2D.Double(490, 675, 15, 15, 145, 180, Arc2D.OPEN));
+
+
+        ellipses.add(new Ellipse2D.Double(550,200,0.1,0.1));
+        lines.add(new Line2D.Double(250,750,625,750));
+        lines.add(new Line2D.Double(250, 750, 250, 200));
+        lines.add(new Line2D.Double(600, 750, 600, 200));
+        lines.add(new Line2D.Double(625, 200, 625, 750));
+        arcs.add(new Arc2D.Double(250, 50, 375, 300, 0, 180, Arc2D.OPEN));
+
         //arcs.add(new Arc2D.Double(250, 50, 300, 300, 180, 90, Arc2D.OPEN));
         //arcs.add(new Arc2D.Double(225, 50, 350, 300, 0, 180, Arc2D.OPEN));
 

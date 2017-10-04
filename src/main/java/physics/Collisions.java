@@ -105,7 +105,7 @@ public class Collisions{
      * This function bounces the ball given a normal vector
      */
     private static void bounce(Ball ball, Vec2d normalVector){
-        // Calculate the deacceleration with a collision duration if 1 rick.
+        // Calculate the deacceleration with a collision duration of 1 tick.
         Vec2d deacceleration = ball.getVelocity().scale(-100);
         // F = m*a
         Vec2d reactionForce = deacceleration.scale(ball.getMass());
