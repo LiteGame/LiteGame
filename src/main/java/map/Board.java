@@ -4,10 +4,7 @@ import items.BallSprite;
 import items.Flipper_Left;
 import items.Flipper_Right;
 import nl.tu.delft.defpro.api.IDefProAPI;
-import physics.Ball;
-import physics.Collisions;
-import physics.Environment;
-import physics.Vec2d;
+import physics.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -216,16 +213,19 @@ public class Board extends JPanel implements ActionListener {
 
         Iterator<Line2D> iteratorlines = lines.iterator();
         while(iteratorlines.hasNext()) {
+            physicsEnvironment.spawnObject(new PhysicsShape(iteratorlines.next()));
             g.draw(iteratorlines.next());
         }
 
         Iterator<Ellipse2D> iteratorellipses = ellipses.iterator();
         while(iteratorellipses.hasNext()) {
+            physicsEnvironment.spawnObject(new PhysicsShape(iteratorellipses.next()));
             g.draw(iteratorellipses.next());
         }
 
         Iterator<Arc2D> iteratorarcs = arcs.iterator();
         while(iteratorarcs.hasNext()) {
+            physicsEnvironment.spawnObject(new PhysicsShape(iteratorarcs.next()));
             g.draw(iteratorarcs.next());
         }
 
