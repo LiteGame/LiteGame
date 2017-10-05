@@ -82,6 +82,33 @@ public class Board extends JPanel implements ActionListener {
 
         physicsEnvironment = new Environment();
 
+        //side shutters
+        lines.add(new Line2D.Double(295,600,295,670));
+        lines.add(new Line2D.Double(295,670,340,720));
+        lines.add(new Line2D.Double(555,600,555,670));
+        lines.add(new Line2D.Double(555,670,510,720));
+
+        //side shapes
+        lines.add(new Line2D.Double(310.5,527,250,200));
+        arcs.add(new Arc2D.Double(250, 560, 60, 100, 90, 90, Arc2D.OPEN));
+        arcs.add(new Arc2D.Double(250, 500, 60, 60, -90, 100, Arc2D.OPEN));
+        lines.add(new Line2D.Double(539.5,527,600,200));
+        arcs.add(new Arc2D.Double(540, 560, 60, 100, 90, -90, Arc2D.OPEN));
+        arcs.add(new Arc2D.Double(540, 500, 60, 60, -90, -100, Arc2D.OPEN));
+
+        //top middle arcs
+        arcs.add(new Arc2D.Double(325, 61.5, 100, 112, 105, -105, Arc2D.OPEN));
+        arcs.add(new Arc2D.Double(425, 53.5, 100, 120, 75, 105, Arc2D.OPEN));
+
+        //left shutter top
+        arcs.add(new Arc2D.Double(275, 120, 160, 150, 150, 40, Arc2D.OPEN));
+        arcs.add(new Arc2D.Double(280, 110, 160, 150, 90, 70, Arc2D.OPEN));
+        arcs.add(new Arc2D.Double(320, 110, 80, 80, 90, -70, Arc2D.OPEN));
+
+        //right shutter top
+        arcs.add(new Arc2D.Double(400, 100, 200, 200, 0, 90, Arc2D.OPEN));
+        arcs.add(new Arc2D.Double(460, 100, 80, 80, 90, 85, Arc2D.OPEN));
+
         //Bumper left side
         lines.add(new Line2D.Double(325,625,325,665));
         lines.add(new Line2D.Double(344.3969,622,360,680));
@@ -96,12 +123,18 @@ public class Board extends JPanel implements ActionListener {
         arcs.add(new Arc2D.Double(505, 615, 20, 20, 160, -160, Arc2D.OPEN));
         arcs.add(new Arc2D.Double(490, 675, 15, 15, 145, 180, Arc2D.OPEN));
 
+        //bumpers middle
+        ellipses.add(new Ellipse2D.Double(420,220,50,50));
+        ellipses.add(new Ellipse2D.Double(370,170,40,40));
+        ellipses.add(new Ellipse2D.Double(340,260,60,60));
+        ellipses.add(new Ellipse2D.Double(475,150,80,80));
 
-        ellipses.add(new Ellipse2D.Double(550,200,0.1,0.1));
-        lines.add(new Line2D.Double(250,750,625,750));
-        lines.add(new Line2D.Double(250, 750, 250, 200));
-        lines.add(new Line2D.Double(600, 750, 600, 200));
-        lines.add(new Line2D.Double(625, 200, 625, 750));
+
+        ellipses.add(new Ellipse2D.Double(600,200,0.1,0.1));
+        lines.add(new Line2D.Double(250,775,625,775));
+        lines.add(new Line2D.Double(250, 775, 250, 200));
+        lines.add(new Line2D.Double(600, 775, 600, 200));
+        lines.add(new Line2D.Double(625, 200, 625, 775));
         arcs.add(new Arc2D.Double(250, 50, 375, 300, 0, 180, Arc2D.OPEN));
 
         //arcs.add(new Arc2D.Double(250, 50, 300, 300, 180, 90, Arc2D.OPEN));
@@ -119,7 +152,7 @@ public class Board extends JPanel implements ActionListener {
         ballSprite.loadImage("resources/dot.png");
 
         physicsEnvironment.spawnProp(ballSprite.getBall());
-        physicsEnvironment.setGravity(0.0);
+        physicsEnvironment.setGravity(9.81);
         //flipperRight = new Flipper_Right(550,400, -195);
         //flipperLeft = new Flipper_Left(200, 400, 15);
 
