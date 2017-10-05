@@ -29,8 +29,6 @@ public class Board extends JPanel implements ActionListener {
     private Flipper_Left flipperLeft;
     private boolean ingame;
 
-    private Ball ball;
-
     private Set<Line2D> lines = new HashSet<>();
     private Set<Ellipse2D> ellipses = new HashSet<>();
     private Set<Arc2D> arcs = new HashSet<>();
@@ -107,18 +105,12 @@ public class Board extends JPanel implements ActionListener {
         //arcs.add(new Arc2D.Double(250, 50, 300, 300, 180, 90, Arc2D.OPEN));
         //arcs.add(new Arc2D.Double(225, 50, 350, 300, 0, 180, Arc2D.OPEN));
 
-        ball = new Ball(physicsEnvironment, new Vec2d(balStartX,balStartY), 10.0);
-        ballSprite = new BallSprite(ball);
-        ballSprite.loadImage("resources/dot.png");
-        ballSprite.setVisible(true);
-        physicsEnvironment.spawnProp(ball);
-
         flipperRight = new Flipper_Right(new Vec2d(550,400), -195);
         flipperLeft = new Flipper_Left(new Vec2d(200, 400), 15);
-        ballSprite = new BallSprite(new Ball(physicsEnvironment, new Vec2d(balStartX,balStartY), 10.0));
+        ballSprite = new BallSprite(new Ball(physicsEnvironment, new Vec2d(balStartX,balStartY), 10.0,5.0));
         ballSprite.loadImage("resources/dot.png");
-
-        physicsEnvironment.spawnProp(ballSprite.getBall());
+        ballSprite.setVisible(true);
+        physicsEnvironment.spawnObject(ballSprite.getBall());
         physicsEnvironment.setGravity(0.0);
         //flipperRight = new Flipper_Right(550,400, -195);
         //flipperLeft = new Flipper_Left(200, 400, 15);
@@ -160,6 +152,7 @@ public class Board extends JPanel implements ActionListener {
     }
 
     private void drawObjects(Graphics2D g) {
+        g.setColor(Color.WHITE);
         AffineTransform identity_left = new AffineTransform();
         AffineTransform trans_left = new AffineTransform();
 
@@ -236,17 +229,6 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
-    private void updateFlippers() {
-
-        if (flipperRight.isVisible()) {
-            flipperRight.move();
-        }
-        if (flipperLeft.isVisible()) {
-            flipperLeft.move();
-        }
-
-    }
-
     private class TAdapter extends KeyAdapter {
 
         @Override
@@ -254,16 +236,16 @@ public class Board extends JPanel implements ActionListener {
             int key = e.getKeyCode();
             if (key == KeyEvent.VK_LEFT) {
                 //LeftPressed = true;
-                physicsEnvironment.applyForceTime(ballSprite.getBall(),new Vec2d(-10000.0,0.0),1);
+                ballSprite.getBall().applyForce(new Vec2d(-500.0,0.0));
             }
             if (key == KeyEvent.VK_RIGHT) {
-                physicsEnvironment.applyForceTime(ballSprite.getBall(),new Vec2d(10000.0,0.0),1);
+                ballSprite.getBall().applyForce(new Vec2d(500.0,0.0));
             }
             if (key == KeyEvent.VK_UP) {
-                physicsEnvironment.applyForceTime(ballSprite.getBall(),new Vec2d(0.0,-10000.0),1);
+                ballSprite.getBall().applyForce(new Vec2d(0.0,-500.0));
             }
             if (key == KeyEvent.VK_DOWN) {
-                physicsEnvironment.applyForceTime(ballSprite.getBall(),new Vec2d(0.0,10000.0),1);
+                ballSprite.getBall().applyForce(new Vec2d(0.0,500.0));
             }
             //flipperLeft.keyPressed(e);
             //flipperRight.keyPressed(e);

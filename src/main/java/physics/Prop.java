@@ -1,9 +1,14 @@
 package physics;
 
+import java.awt.*;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+
 /**
  * Represents a physics point object.
  */
-public class Prop {
+public class Prop implements Collidable {
     /**
      * The environment to handle physics in.
      */
@@ -27,6 +32,11 @@ public class Prop {
         this.velocity = new Vec2d(0,0);
         this.position = position;
         this.mass = mass;
+    }
+
+    public Shape getShape() {
+        Vec2d pos = this.position;
+        return new Ellipse2D.Double(pos.x,pos.y,0,0);
     }
 
     public Vec2d getPosition() {
@@ -98,7 +108,7 @@ public class Prop {
      */
     public void applyForce(Vec2d force) {
         // a = F / m
-        this.velocity = this.velocity.plus(force.scale(1.0/this.mass).scale(1.0/environment.TICKRATE)).round(4);
+        this.velocity = this.velocity.plus(force.scale(1.0/this.mass).scale(1.0/environment.TICKRATE)).round(6);
     }
 
     @Override
