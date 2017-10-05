@@ -2,6 +2,7 @@ package physics;
 import items.BallSprite;
 import map.Board;
 
+import javax.sound.sampled.Line;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
@@ -119,18 +120,18 @@ public class Collisions{
     /**
      * This function iterates through the sets of lines, ellipses and arcs and checks collision.
      */
-    public static void tick(Ball ball, Set<Line2D> lines, Set<Ellipse2D> ellipses, Set<Arc2D> arcs){
-        Iterator<Line2D> iteratorlines = lines.iterator();
-        while(iteratorlines.hasNext()) {
-            checkCollisionBallLine(ball, iteratorlines.next());
+    public static void tick(Ball ball, Set<Line2D> lines, Set<Ellipse2D> ellipses, Set<Arc2D> arcs, Set<Line2D> flippers){
+        for (Line2D line : lines) {
+            checkCollisionBallLine(ball, line);
         }
-        Iterator<Ellipse2D> iteratorellipses = ellipses.iterator();
-        while(iteratorellipses.hasNext()) {
-            checkCollisionBallEllipse(ball, iteratorellipses.next());
+        for (Ellipse2D ellipse : ellipses) {
+            checkCollisionBallEllipse(ball, ellipse);
         }
-        Iterator<Arc2D> iteratorarc = arcs.iterator();
-        while(iteratorarc.hasNext()) {
-            checkCollisionBallArc(ball, iteratorarc.next());
+        for (Arc2D arc : arcs) {
+            checkCollisionBallArc(ball, arc);
+        }
+        for (Line2D flipper : flippers) {
+            checkCollisionBallLine(ball, flipper);
         }
     }
 }
