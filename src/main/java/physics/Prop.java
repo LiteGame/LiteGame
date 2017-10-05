@@ -1,9 +1,14 @@
 package physics;
 
+import java.awt.*;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+
 /**
  * Represents a physics point object.
  */
-public class Prop {
+public class Prop implements Collidable {
     /**
      * The environment to handle physics in.
      */
@@ -29,6 +34,11 @@ public class Prop {
         this.mass = mass;
     }
 
+    public Shape getShape() {
+        Vec2d pos = this.position;
+        return new Ellipse2D.Double(pos.x,pos.y,0,0);
+    }
+
     public Vec2d getPosition() {
         return position;
     }
@@ -36,6 +46,14 @@ public class Prop {
     public Vec2d getVelocity() {
         return velocity;
     }
+
+    public double getMass() {
+        return mass;
+    }
+
+    public void setVelocity(Vec2d velicity) { this.velocity = velicity;}
+
+    public void setPosition(Vec2d position) { this.position = position;}
 
     /**
      * Handles a 'tick'.
@@ -90,6 +108,27 @@ public class Prop {
      */
     public void applyForce(Vec2d force) {
         // a = F / m
-        this.velocity = this.velocity.plus(force.scale(1.0/this.mass).scale(1.0/environment.TICKRATE)).round(4);
+        this.velocity = this.velocity.plus(force.scale(1.0/this.mass).scale(1.0/environment.TICKRATE)).round(6);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Prop) {
+            Prop that = (Prop)obj;
+            if(!this.velocity.equals(that.velocity)) {
+                return false;
+            }
+            if(this.mass != that.mass) {
+                return false;
+            }
+            else if(!this.position.equals(that.position)) {
+                return false;
+            }
+            else if(!this.environment.equals(that.environment)) {
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 }

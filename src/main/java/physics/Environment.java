@@ -1,5 +1,7 @@
 package physics;
 
+import java.util.*;
+
 /**
  * Represents a physics environment.
  */
@@ -27,6 +29,9 @@ public class Environment {
      */
     private double drag = 1;
 
+    private List<Collidable> objects = new ArrayList<>();
+    private Map<Prop, Map<Vec2d,Integer>> forces = new HashMap<>();
+
     public double getGravity() {
         return gravity;
     }
@@ -51,4 +56,20 @@ public class Environment {
         this.drag = drag;
     }
 
+    public void tick() {
+        Map<Prop, Map<Vec2d,Integer>> newForces = new HashMap<>();
+        forces = newForces;
+
+        for(Collidable p : objects) {
+            p.tick();
+        }
+    }
+
+    public List<Collidable> getObjects() {
+        return objects;
+    }
+
+    public void spawnObject(Collidable newObject) {
+        objects.add(newObject);
+    }
 }

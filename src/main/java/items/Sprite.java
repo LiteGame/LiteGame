@@ -1,58 +1,28 @@
 package items;
 
+import physics.Vec2d;
+
 import java.awt.Image;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import javax.swing.ImageIcon;
 
-public class Sprite {
+public interface Sprite {
 
-    protected float x;
-    protected float y;
-    protected int width;
-    protected int height;
-    protected boolean vis;
-    protected Image image;
+    void loadImage(String imageName);
 
-    public Sprite(float x, float y) {
+    Image getImage();
 
-        this.x = x;
-        this.y = y;
-        vis = true;
-    }
+    boolean isVisible();
 
-    protected void getImageDimensions() {
+    Vec2d getPosition();
 
-        width = image.getWidth(null);
-        height = image.getHeight(null);
-    }
+    //double getX();
 
-    protected void loadImage(String imageName) {
+    //double getY();
 
-        ImageIcon ii = new ImageIcon(imageName);
-        image = ii.getImage();
-    }
+    void setVisible(Boolean visible);
 
-    public Image getImage() {
-        return image;
-    }
+    Ellipse2D getBounds();
 
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
-    public boolean isVisible() {
-        return vis;
-    }
-
-    public void setVisible(Boolean visible) {
-        vis = visible;
-    }
-
-    public Ellipse2D getBounds() {return new Ellipse2D.Float(x, y, width, height);
-    }
 }
