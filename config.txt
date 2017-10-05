@@ -26,6 +26,7 @@ int boardWidth = 800
 int boardHeight = 1000
 int balStartX = 560
 int balStartY = 450
+int flipperSpeed = 5
 
 #Example real attributes
 #real height = 5.5

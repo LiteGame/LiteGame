@@ -1,8 +1,6 @@
 package map;
 
 import items.BallSprite;
-import items.Flipper_Left;
-import items.Flipper_Right;
 import nl.tu.delft.defpro.api.IDefProAPI;
 import physics.Ball;
 import physics.Collisions;
@@ -17,24 +15,25 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.*;
 import java.awt.geom.Ellipse2D;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 public class Board extends JPanel implements ActionListener {
 
     private Timer timer;
-    private Flipper_Right flipperRight;
-    private Flipper_Left flipperLeft;
-    private boolean ingame;
+    private Boolean inGame;
 
-    private Ball ball;
+    private int flipperRightTick = 0;
+    private int flipperLeftTick = 0;
+    private Boolean leftPressed = false;
+    private Boolean rightPressed = false;
 
     private Set<Line2D> lines = new HashSet<>();
     private Set<Ellipse2D> ellipses = new HashSet<>();
     private Set<Arc2D> arcs = new HashSet<>();
+    private Set<Line2D> flippers = new HashSet<>();
 
+    private Ball ball;
     private BallSprite ballSprite;
     private Environment physicsEnvironment;
     private Collisions collisions;
@@ -43,14 +42,12 @@ public class Board extends JPanel implements ActionListener {
     private int balStartY;
     private int boardWidth;
     private int boardHeight;
-
-
+    private int flipperSpeed;
 
     public Board(IDefProAPI config) {
 
         initConfig(config);
         initBoard();
-
     }
 
 
@@ -60,6 +57,7 @@ public class Board extends JPanel implements ActionListener {
             balStartY = config.getIntegerValueOf("balStartY");
             boardWidth = config.getIntegerValueOf("boardWidth");
             boardHeight = config.getIntegerValueOf("boardHeight");
+            flipperSpeed = config.getIntegerValueOf("flipperSpeed");
         } catch (Exception e){
             System.out.println("There was an error loading the config, loading default values:" + e);
             // Default in case config file fails.
@@ -67,6 +65,7 @@ public class Board extends JPanel implements ActionListener {
             balStartY = 520;
             boardWidth = 800;
             boardHeight = 600;
+            flipperSpeed = 3;
         }
     }
 
@@ -76,7 +75,7 @@ public class Board extends JPanel implements ActionListener {
         addKeyListener(new TAdapter());
         setFocusable(true);
         setBackground(Color.BLACK);
-        ingame = true;
+        inGame = true;
 
         setPreferredSize(new Dimension(boardWidth, boardHeight));
 
@@ -96,7 +95,7 @@ public class Board extends JPanel implements ActionListener {
         arcs.add(new Arc2D.Double(505, 615, 20, 20, 160, -160, Arc2D.OPEN));
         arcs.add(new Arc2D.Double(490, 675, 15, 15, 145, 180, Arc2D.OPEN));
 
-
+        // Outside
         ellipses.add(new Ellipse2D.Double(550,200,0.1,0.1));
         lines.add(new Line2D.Double(250,750,625,750));
         lines.add(new Line2D.Double(250, 750, 250, 200));
@@ -113,8 +112,6 @@ public class Board extends JPanel implements ActionListener {
         ballSprite.setVisible(true);
         physicsEnvironment.spawnProp(ball);
 
-        flipperRight = new Flipper_Right(new Vec2d(550,400), -195);
-        flipperLeft = new Flipper_Left(new Vec2d(200, 400), 15);
         ballSprite = new BallSprite(new Ball(physicsEnvironment, new Vec2d(balStartX,balStartY), 10.0));
         ballSprite.loadImage("resources/dot.png");
 
@@ -139,15 +136,19 @@ public class Board extends JPanel implements ActionListener {
         return arcs;
     }
 
+    public Set getFlippers() {
+        return flippers;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         paintComponent((Graphics2D) g);
     }
 
-    public void paintComponent(Graphics2D g) {
+    private void paintComponent(Graphics2D g) {
         super.paintComponent(g);
 
-        if (ingame) {
+        if (inGame) {
 
             drawObjects(g);
 
@@ -160,46 +161,26 @@ public class Board extends JPanel implements ActionListener {
     }
 
     private void drawObjects(Graphics2D g) {
-        AffineTransform identity_left = new AffineTransform();
-        AffineTransform trans_left = new AffineTransform();
-
-        AffineTransform identity_right = new AffineTransform();
-        AffineTransform trans_right = new AffineTransform();
-
 
         if (ballSprite.isVisible()) {
             g.drawImage(ballSprite.getImage(), (int) ballSprite.getPosition().x, (int) ballSprite.getPosition().y, this);
         }
 
-//        if (flipperRight.isVisible()) {
-//            identity_right.translate(flipperRight.getX(), flipperRight.getY());
-//            trans_right.setTransform(identity_right);
-//            trans_right.rotate( Math.toRadians(flipperRight.getAngle()) );
-//            trans_right.getScaleInstance(1, -1);
-//            trans_right.translate(0, -flipperRight.getImage().getHeight(null));
-//            g.drawImage(flipperRight.getImage(), trans_right, this);
-//        }
-//
-//        if (flipperLeft.isVisible()) {
-//            identity_left.translate(flipperLeft.getX(), flipperLeft.getY());
-//            trans_left.setTransform(identity_left);
-//            trans_left.rotate( Math.toRadians(flipperLeft.getAngle()) );
-//            g.drawImage(flipperLeft.getImage(), trans_left, this);
-//        }
-
-        Iterator<Line2D> iteratorlines = lines.iterator();
-        while(iteratorlines.hasNext()) {
-            g.draw(iteratorlines.next());
+        for (Line2D line : lines) {
+            g.draw(line);
         }
 
-        Iterator<Ellipse2D> iteratorellipses = ellipses.iterator();
-        while(iteratorellipses.hasNext()) {
-            g.draw(iteratorellipses.next());
+        for (Ellipse2D ellipse : ellipses) {
+            g.draw(ellipse);
         }
 
-        Iterator<Arc2D> iteratorarcs = arcs.iterator();
-        while(iteratorarcs.hasNext()) {
-            g.draw(iteratorarcs.next());
+        for (Arc2D arc : arcs) {
+            g.draw(arc);
+        }
+
+        flippers = updateFlippers();
+        for (Line2D flipper : flippers) {
+            g.draw(flipper);
         }
 
         g.setColor(Color.WHITE);
@@ -223,28 +204,67 @@ public class Board extends JPanel implements ActionListener {
         inGame();
 
         physicsEnvironment.tick();
-        collisions.tick(ballSprite.getBall(), lines, ellipses, arcs);
+        collisions.tick(ballSprite.getBall(), lines, ellipses, arcs, flippers);
         //updateFlippers();
 
         repaint();
     }
 
     private void inGame() {
-
-        if (!ingame) {
+        if (!inGame) {
             timer.stop();
         }
     }
 
-    private void updateFlippers() {
+    private Set<Line2D> updateFlippers() {
+        Set<Line2D> flippers = new HashSet<>();
+        double x = 0;
+        double y = 0;
+        double a = 0;
 
-        if (flipperRight.isVisible()) {
-            flipperRight.move();
-        }
-        if (flipperLeft.isVisible()) {
-            flipperLeft.move();
+        //left
+        if (leftPressed) {
+            flipperLeftTick += flipperSpeed;
+            if (flipperLeftTick >= 30) {
+                flipperLeftTick = 30;
+            }
+        } else {
+            flipperLeftTick -= 2 * flipperSpeed;
+            if (-20 >= flipperLeftTick) {
+                flipperLeftTick = -20;
+            }
         }
 
+        x = 60;
+        y = 0;
+        a =  Math.toRadians(-flipperLeftTick);
+        x = (x * Math.cos(a) - y * Math.sin(a));
+        y = (x * Math.sin(a) - y * Math.cos(a));
+
+        flippers.add(new Line2D.Double(340, 720, x + 340, y + 720));
+
+        //Right
+        if (rightPressed) {
+            flipperRightTick += flipperSpeed;
+            if (flipperRightTick >= 30) {
+                flipperRightTick = 30;
+            }
+        } else {
+            flipperRightTick -= 2 * flipperSpeed;
+            if (-20 >= flipperRightTick) {
+                flipperRightTick = -20;
+            }
+        }
+
+        x = -60;
+        y = 0;
+        a = Math.toRadians(flipperRightTick);
+
+        x = (x * Math.cos(a) - y * Math.sin(a));
+        y = (x * Math.sin(a) - y * Math.cos(a));
+        flippers.add(new Line2D.Double(510, 720, x + 510, y + 720));
+
+        return flippers;
     }
 
     private class TAdapter extends KeyAdapter {
@@ -253,10 +273,11 @@ public class Board extends JPanel implements ActionListener {
         public void keyPressed(KeyEvent e) {
             int key = e.getKeyCode();
             if (key == KeyEvent.VK_LEFT) {
-                //LeftPressed = true;
+                leftPressed = true;
                 physicsEnvironment.applyForceTime(ballSprite.getBall(),new Vec2d(-10000.0,0.0),1);
             }
             if (key == KeyEvent.VK_RIGHT) {
+                rightPressed = true;
                 physicsEnvironment.applyForceTime(ballSprite.getBall(),new Vec2d(10000.0,0.0),1);
             }
             if (key == KeyEvent.VK_UP) {
@@ -265,18 +286,16 @@ public class Board extends JPanel implements ActionListener {
             if (key == KeyEvent.VK_DOWN) {
                 physicsEnvironment.applyForceTime(ballSprite.getBall(),new Vec2d(0.0,10000.0),1);
             }
-            //flipperLeft.keyPressed(e);
-            //flipperRight.keyPressed(e);
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
             int key = e.getKeyCode();
             if (key == KeyEvent.VK_LEFT) {
-                //LeftPressed = false;
+                leftPressed = false;
             }
             if (key == KeyEvent.VK_RIGHT) {
-                //RightPressed = false;
+                rightPressed = false;
             }
             //flipperRight.keyReleased(e);
             //flipperLeft.keyReleased(e);
