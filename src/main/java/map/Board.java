@@ -135,8 +135,8 @@ public class Board extends JPanel implements ActionListener {
         ballSprite = new BallSprite(new Ball(physicsEnvironment, new Vec2d(balStartX,balStartY), 10.0, 5.0));
         ballSprite.loadImage("resources/dot.png");
         ballSprite.setVisible(true);
-        physicsEnvironment.spawnObject(ballSprite.getBall());
-        physicsEnvironment.setGravity(2.0);
+        physicsEnvironment.spawnDynamicObject(ballSprite.getBall());
+        physicsEnvironment.setGravity(9.81);
         //flipperRight = new Flipper_Right(550,400, -195);
         //flipperLeft = new Flipper_Left(200, 400, 15);
 
@@ -194,22 +194,24 @@ public class Board extends JPanel implements ActionListener {
         }
 
         for (Line2D line : lines) {
-            physicsEnvironment.spawnObject(new PhysicsShape(line));
+            physicsEnvironment.spawnStaticObject(new PhysicsShape(line));
             g.draw(line);
         }
 
         for (Ellipse2D ellipse : ellipses) {
-            physicsEnvironment.spawnObject(new PhysicsShape(ellipse));
+            physicsEnvironment.spawnStaticObject(new PhysicsShape(ellipse));
             g.draw(ellipse);
         }
 
         for (Arc2D arc : arcs) {
-            physicsEnvironment.spawnObject(new PhysicsShape(arc));
+            physicsEnvironment.spawnStaticObject(new PhysicsShape(arc));
             g.draw(arc);
         }
 
+
         flippers = updateFlippers();
         for (Line2D flipper : flippers) {
+            physicsEnvironment.spawnStaticObject(new PhysicsShape(flipper));
             g.draw(flipper);
         }
 
@@ -230,13 +232,8 @@ public class Board extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
         inGame();
-
         physicsEnvironment.tick();
-        collisions.tick(ballSprite.getBall(), lines, ellipses, arcs, flippers);
-        //updateFlippers();
-
         repaint();
     }
 
@@ -304,17 +301,22 @@ public class Board extends JPanel implements ActionListener {
             int key = e.getKeyCode();
             if (key == KeyEvent.VK_LEFT) {
                 leftPressed = true;
-                ballSprite.getBall().applyForce(new Vec2d(-500.0,0.0));
             }
             if (key == KeyEvent.VK_RIGHT) {
                 rightPressed = true;
-                ballSprite.getBall().applyForce(new Vec2d(500.0,0.0));
             }
-            if (key == KeyEvent.VK_UP) {
-                ballSprite.getBall().applyForce(new Vec2d(0.0,-500.0));
+
+            if (key == KeyEvent.VK_A) {
+                ballSprite.getBall().applyForce(new Vec2d(-5000.0,0.0));
             }
-            if (key == KeyEvent.VK_DOWN) {
-                ballSprite.getBall().applyForce(new Vec2d(0.0,500.0));
+            if (key == KeyEvent.VK_D) {
+                ballSprite.getBall().applyForce(new Vec2d(5000.0,0.0));
+            }
+            if (key == KeyEvent.VK_W) {
+                ballSprite.getBall().applyForce(new Vec2d(0.0,-5000.0));
+            }
+            if (key == KeyEvent.VK_S) {
+                ballSprite.getBall().applyForce(new Vec2d(0.0,5000.0));
             }
         }
 

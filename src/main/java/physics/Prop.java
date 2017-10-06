@@ -9,6 +9,9 @@ import java.awt.geom.Rectangle2D;
  * Represents a physics point object.
  */
 public class Prop implements Collidable {
+
+    private Collisions collisions;
+
     /**
      * The environment to handle physics in.
      */
@@ -68,6 +71,7 @@ public class Prop implements Collidable {
             applyDrag();
             applyFriction();
         }
+        collisions.checkCollision(this, environment.getStaticObjects());
         applyVelocity();
     }
 
