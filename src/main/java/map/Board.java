@@ -32,7 +32,6 @@ public class Board extends JPanel implements ActionListener {
 
     private BallSprite ballSprite;
     private Environment physicsEnvironment;
-    private Collisions collisions;
 
     private int balStartX;
     private int balStartY;
@@ -140,6 +139,18 @@ public class Board extends JPanel implements ActionListener {
         //flipperRight = new Flipper_Right(550,400, -195);
         //flipperLeft = new Flipper_Left(200, 400, 15);
 
+        for (Line2D line : lines) {
+            physicsEnvironment.spawnStaticObject(new PhysicsShape(line));
+        }
+
+        for (Ellipse2D ellipse : ellipses) {
+            physicsEnvironment.spawnStaticObject(new PhysicsShape(ellipse));
+        }
+
+        for (Arc2D arc : arcs) {
+            physicsEnvironment.spawnStaticObject(new PhysicsShape(arc));
+        }
+
         timer = new Timer(10, this);
         timer.start();
     }
@@ -194,17 +205,14 @@ public class Board extends JPanel implements ActionListener {
         }
 
         for (Line2D line : lines) {
-            physicsEnvironment.spawnStaticObject(new PhysicsShape(line));
             g.draw(line);
         }
 
         for (Ellipse2D ellipse : ellipses) {
-            physicsEnvironment.spawnStaticObject(new PhysicsShape(ellipse));
             g.draw(ellipse);
         }
 
         for (Arc2D arc : arcs) {
-            physicsEnvironment.spawnStaticObject(new PhysicsShape(arc));
             g.draw(arc);
         }
 
@@ -307,16 +315,16 @@ public class Board extends JPanel implements ActionListener {
             }
 
             if (key == KeyEvent.VK_A) {
-                ballSprite.getBall().applyForce(new Vec2d(-5000.0,0.0));
+                ballSprite.getBall().applyForce(new Vec2d(-3000.0,0.0));
             }
             if (key == KeyEvent.VK_D) {
-                ballSprite.getBall().applyForce(new Vec2d(5000.0,0.0));
+                ballSprite.getBall().applyForce(new Vec2d(3000.0,0.0));
             }
             if (key == KeyEvent.VK_W) {
-                ballSprite.getBall().applyForce(new Vec2d(0.0,-5000.0));
+                ballSprite.getBall().applyForce(new Vec2d(0.0,-3000.0));
             }
             if (key == KeyEvent.VK_S) {
-                ballSprite.getBall().applyForce(new Vec2d(0.0,5000.0));
+                ballSprite.getBall().applyForce(new Vec2d(0.0,3000.0));
             }
         }
 

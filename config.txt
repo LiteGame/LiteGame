@@ -24,8 +24,8 @@
 int startSpeed = 8
 int boardWidth = 800
 int boardHeight = 1000
-int balStartX = 515
-int balStartY = 450
+int balStartX = 605
+int balStartY = 700
 int flipperSpeed = 5
 
 #Example real attributes
