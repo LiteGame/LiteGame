@@ -1,10 +1,22 @@
 package physics;
 
+import items.BallSprite;
+
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 
 public class Ball extends Prop {
     double radius;
+
+    public BallSprite getSprite() {
+        return sprite;
+    }
+
+    public void setSprite(BallSprite sprite) {
+        this.sprite = sprite;
+    }
+
+    private BallSprite sprite;
 
     public Ball(Environment e, Vec2d position, double mass, double radius) {
         super(e, position, mass);

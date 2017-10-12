@@ -32,6 +32,7 @@ public class Board extends JPanel implements ActionListener {
 
     private BallSprite ballSprite;
     private Environment physicsEnvironment;
+    private Collisions collisions;
 
     private int balStartX;
     private int balStartY;
@@ -131,11 +132,13 @@ public class Board extends JPanel implements ActionListener {
 
         arcs.add(new Arc2D.Double(250, 50, 375, 300, 0, 180, Arc2D.OPEN));
 
-        ballSprite = new BallSprite(new Ball(physicsEnvironment, new Vec2d(balStartX,balStartY), 10.0, 5.0));
-        ballSprite.loadImage("resources/dot.png");
-        ballSprite.setVisible(true);
-        physicsEnvironment.spawnDynamicObject(ballSprite.getBall());
-        physicsEnvironment.setGravity(9.81);
+        //ballSprite = new BallSprite(new Ball(physicsEnvironment, new Vec2d(balStartX,balStartY), 10.0, 5.0));
+        //ballSprite.loadImage("resources/dot.png");
+        //ballSprite.setVisible(true);
+        BallFactory fact = new BallFactory(physicsEnvironment, new Vec2d(balStartX,balStartY));
+        ballSprite = fact.create().getSprite();
+        //physicsEnvironment.spawnObject(ballSprite.getBall());
+        physicsEnvironment.setGravity(2.0);
         //flipperRight = new Flipper_Right(550,400, -195);
         //flipperLeft = new Flipper_Left(200, 400, 15);
 
