@@ -55,7 +55,7 @@ public class Collisions {
     private static void checkCollisionPropLine(Prop prop, Line2D line) {
         // Is the vector from the corner of the screen to the middle of the ball.
         Vec2d zeroToBall = prop.getPosition().plus(new Vec2d(5, 5));
-        // The vector from the corner of the screen to the edge of the line.dwwa
+        // The vector from the corner of the screen to the edge of the line.
         Vec2d zeroToLine = new Vec2d(line.getX1(), line.getY1());
         // Vector a is the vector from the corner if the line to the center of the ball.
         Vec2d a = zeroToLine.minus(zeroToBall);
@@ -109,10 +109,10 @@ public class Collisions {
         double bOutside = (arc.getHeight() + 5) / 2;
 
         // Normal of a ellipse
-        double thetha = distanceBallArc.getPhase();
-        double radiusEllipse = a * b / Math.sqrt(a * a * Math.sin(thetha) * Math.sin(thetha) + b * b * Math.cos(thetha) * Math.cos(thetha));
-        double radiusInsideEllipse = aInside * bInside / Math.sqrt(aInside * aInside * Math.sin(thetha) * Math.sin(thetha) + bInside * bInside * Math.cos(thetha) * Math.cos(thetha));
-        double radiusOutsideEllipse = aOutside * bOutside / Math.sqrt(aOutside * aOutside * Math.sin(thetha) * Math.sin(thetha) + bOutside * bOutside * Math.cos(thetha) * Math.cos(thetha));
+        double theta = distanceBallArc.getPhase();
+        double radiusEllipse = a * b / Math.sqrt(a * a * Math.sin(theta) * Math.sin(theta) + b * b * Math.cos(theta) * Math.cos(theta));
+        double radiusInsideEllipse = aInside * bInside / Math.sqrt(aInside * aInside * Math.sin(theta) * Math.sin(theta) + bInside * bInside * Math.cos(theta) * Math.cos(theta));
+        double radiusOutsideEllipse = aOutside * bOutside / Math.sqrt(aOutside * aOutside * Math.sin(theta) * Math.sin(theta) + bOutside * bOutside * Math.cos(theta) * Math.cos(theta));
 
         // Check if inside the arc.
         if (distanceBallArc.getMagnitude() < radiusEllipse && arc.containsAngle(angle)) {
@@ -123,7 +123,7 @@ public class Collisions {
                 normalVectorInside = normalVectorInside.scale(-1/normalVectorInside.getMagnitude());
                 Vec2d normalVectorLocation = distanceBallArc.minus(normalVectorInside.scale(5));
                 Vec2d normalVectorInwards = new Vec2d(normalVectorLocation.x * b/a, normalVectorLocation.y * a/b);
-                normalVectorInwards = normalVectorInwards.scale(1/normalVectorInwards.getMagnitude());
+                normalVectorInwards = normalVectorInwards.scale(-1/normalVectorInwards.getMagnitude());
 
                 // Collision on the inside.
                 bounce(prop, normalVectorInwards);
@@ -151,10 +151,10 @@ public class Collisions {
      * @param normalVector This is the normal vector that is used to determine what direction to bounce to
      */
     private static void bounce(Prop prop, Vec2d normalVector) {
-        // Calculate the deacceleration with a collision duration of 1 tick.
-        Vec2d deacceleration = prop.getVelocity().scale(-100);
+        // Calculate the deceleration with a collision duration of 1 tick.
+        Vec2d deceleration = prop.getVelocity().scale(-100);
         // F = m*a
-        Vec2d reactionForce = deacceleration.scale(prop.getMass());
+        Vec2d reactionForce = deceleration.scale(prop.getMass());
         // Normal force is the reaction force projected onto the normal vector of the object we bounce from.
         Vec2d normalForce = normalVector.scale(reactionForce.dot(normalVector));
         // Apply the force and let the physics do its magic.
