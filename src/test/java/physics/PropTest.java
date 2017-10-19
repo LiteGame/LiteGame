@@ -38,7 +38,7 @@ public class PropTest {
         when(environment.getGravity()).thenReturn(0.0);
         when(environment.getFriction()).thenReturn(0.0);
         Vec2d initialPos = new Vec2d(100,100);
-        Prop p = new Prop(environment,initialPos,1);
+        Prop p = new Prop(environment,initialPos,1, 1);
         //1 kg prop gets pushed downward with 1 newton for 1 second.
         for(int i = 0; i<tickRate; i++) {
             p.applyForce(new Vec2d(0, 1));
@@ -54,7 +54,7 @@ public class PropTest {
         when(environment.getGravity()).thenReturn(GRAVITY);
         when(environment.getFriction()).thenReturn(0.0);
         Vec2d initialPos = new Vec2d(100,100);
-        Prop p = new Prop(environment,initialPos,1);
+        Prop p = new Prop(environment,initialPos,1, 1);
         //1 kg prop gets pushed downward with 1 newton for 1 second.
         for(int i = 0; i<tickRate; i++) {
             p.tick();
@@ -66,7 +66,7 @@ public class PropTest {
     @Test
     public void testTicks() {
         Vec2d initialPos = new Vec2d(100,100);
-        Prop p = new Prop(environment,initialPos,0.001);
+        Prop p = new Prop(environment,initialPos,0.001, 1);
         for(int i = 0; i < tickRate; i++) {
             p.tick();
         }
@@ -78,7 +78,7 @@ public class PropTest {
     @Test
     public void testCounterGravityForce() {
         Vec2d initialPos = new Vec2d(100,100);
-        Prop p = new Prop(environment,initialPos,0.001);
+        Prop p = new Prop(environment,initialPos,0.001, 1);
 
         Vec2d counterGravityForce = new Vec2d(0,-0.001 * GRAVITY);
         for(int i = 0; i < tickRate; i++) {
@@ -90,21 +90,21 @@ public class PropTest {
 
     @Test
     public void testEqualsFalse() {
-        Prop p1 = new Prop(environment,new Vec2d(1.0,0.0),10);
-        Prop p2 = new Prop(environment,new Vec2d(1.0,1.0),10);
+        Prop p1 = new Prop(environment,new Vec2d(1.0,0.0),10, 1);
+        Prop p2 = new Prop(environment,new Vec2d(1.0,1.0),10, 1);
         Assert.assertNotEquals(p1,p2);
     }
 
     @Test
     public void testEqualsTrue() {
-        Prop p1 = new Prop(environment,new Vec2d(1.0,0.0),10);
-        Prop p2 = new Prop(environment,new Vec2d(1.0,0.0),10);
+        Prop p1 = new Prop(environment,new Vec2d(1.0,0.0),10, 1);
+        Prop p2 = new Prop(environment,new Vec2d(1.0,0.0),10, 1);
         Assert.assertEquals(p1,p2);
     }
 
     @Test
     public void testEqualsSame() {
-        Prop p1 = new Prop(environment,new Vec2d(1.0,0.0),10);
+        Prop p1 = new Prop(environment,new Vec2d(1.0,0.0),10, 1);
         Assert.assertEquals(p1,p1);
     }
 }

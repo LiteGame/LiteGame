@@ -28,11 +28,14 @@ public class Prop implements Collidable {
      */
     private double mass = 1;
 
-    public Prop(Environment e, Vec2d position, double mass) {
+    private int id;
+
+    public Prop(Environment e, Vec2d position, double mass, int id) {
         this.environment = e;
         this.velocity = new Vec2d(0,0);
         this.position = position;
         this.mass = mass;
+        this.id = id;
     }
 
     public Shape getShape() {
@@ -41,7 +44,7 @@ public class Prop implements Collidable {
     }
 
     public Integer getID() {
-        return null;
+        return id;
     }
 
     public Vec2d getPosition() {
@@ -73,7 +76,7 @@ public class Prop implements Collidable {
             applyDrag();
             applyFriction();
         }
-        Collisions.checkCollision(this, environment.getStaticObjects());
+        Collisions.checkCollision(this, environment.getObjects());
         applyVelocity();
     }
 

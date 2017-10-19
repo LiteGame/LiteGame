@@ -33,7 +33,7 @@ class CollisionsTest {
         collidables.add(new PhysicsShape(2000, ellipse));
         collidables.add(new PhysicsShape(3000, arc));
 
-        prop = new Ball(environment, new Vec2d(50,50), 10, 5);
+        prop = new Ball(environment, new Vec2d(50,50), 10, 5, 1);
         prop.setVelocity(new Vec2d(0,-5));
     }
 

@@ -178,12 +178,12 @@ public class Collisions {
                     break;
                 case "java.awt.geom.Ellipse2D":
                     Ellipse2D ellipse = (Ellipse2D) collidable.getShape();
-                    checkCollisionPropEllipse(prop, ellipse);
+                    if ((int)prop.getID() != (int)collidable.getID()){
+                        checkCollisionPropEllipse(prop, ellipse); }
                     break;
                 case "java.awt.geom.Arc2D":
                     Arc2D arc = (Arc2D) collidable.getShape();
                     checkCollisionPropArc(prop, arc);
-                    System.out.println(collidable.getID());
                     break;
             }
         }

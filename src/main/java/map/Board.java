@@ -134,24 +134,24 @@ public class Board extends JPanel implements ActionListener {
 
         arcs.put(2015, new Arc2D.Double(250, 50, 375, 300, 0, 180, Arc2D.OPEN));
 
-        ballSprite = new BallSprite(new Ball(physicsEnvironment, new Vec2d(balStartX,balStartY), 10.0, 5.0));
+        ballSprite = new BallSprite(new Ball(physicsEnvironment, new Vec2d(balStartX,balStartY), 10.0, 5.0, 4000));
         ballSprite.loadImage("resources/dot.png");
         ballSprite.setVisible(true);
-        physicsEnvironment.spawnDynamicObject(ballSprite.getBall());
+        physicsEnvironment.spawnObject(ballSprite.getBall());
         physicsEnvironment.setGravity(9.81);
         //flipperRight = new Flipper_Right(550,400, -195);
         //flipperLeft = new Flipper_Left(200, 400, 15);
 
         for (Map.Entry<Integer, Line2D> line: lines.entrySet()) {
-            physicsEnvironment.spawnStaticObject(new PhysicsShape(line.getKey(), line.getValue()));
+            physicsEnvironment.spawnObject(new PhysicsShape(line.getKey(), line.getValue()));
         }
 
         for (Map.Entry<Integer, Ellipse2D> ellipse: ellipses.entrySet()) {
-            physicsEnvironment.spawnStaticObject(new PhysicsShape(ellipse.getKey(), ellipse.getValue()));
+            physicsEnvironment.spawnObject(new PhysicsShape(ellipse.getKey(), ellipse.getValue()));
         }
 
         for (Map.Entry<Integer, Arc2D> arc: arcs.entrySet()) {
-            physicsEnvironment.spawnStaticObject(new PhysicsShape(arc.getKey(), arc.getValue()));
+            physicsEnvironment.spawnObject(new PhysicsShape(arc.getKey(), arc.getValue()));
         }
 
         timer = new Timer(10, this);
