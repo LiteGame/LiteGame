@@ -7,6 +7,7 @@ import java.awt.geom.Ellipse2D;
 
 public class Ball extends Prop {
     double radius;
+    private boolean frozen;
 
     public BallSprite getSprite() {
         return sprite;
@@ -27,5 +28,23 @@ public class Ball extends Prop {
         Vec2d pos = this.getPosition();
         Ellipse2D ballShape = new Ellipse2D.Double(pos.x-radius,pos.y-radius,radius*2,radius*2);
         return ballShape;
+    }
+
+    public void tick() {
+        if(!frozen) {
+            super.tick();
+        }
+    }
+
+    public void freeze() {
+        frozen = true;
+    }
+
+    public void unfreeze() {
+        frozen = false;
+    }
+
+    public boolean isFrozen() {
+        return frozen;
     }
 }

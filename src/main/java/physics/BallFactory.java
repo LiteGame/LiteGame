@@ -40,7 +40,7 @@ public class BallFactory {
         BallSprite sprite = new BallSprite(b);
         sprite.loadImage(imagePath);
         b.setSprite(sprite);
-        this.e.spawnObject(b);
+        this.e.spawnDynamicObject(b);
         return b;
     }
 }
