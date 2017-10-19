@@ -1,6 +1,7 @@
 package map;
 
 import items.BallSprite;
+import items.Score;
 import nl.tu.delft.defpro.api.IDefProAPI;
 import physics.*;
 
@@ -32,6 +33,7 @@ public class Board extends JPanel implements ActionListener {
 
     private BallSprite ballSprite;
     private Environment physicsEnvironment;
+    private Score score = Score.getInstance();
 
     private int balStartX;
     private int balStartY;
@@ -40,11 +42,9 @@ public class Board extends JPanel implements ActionListener {
     private int flipperSpeed;
 
     public Board(IDefProAPI config) {
-
         initConfig(config);
         initBoard();
     }
-
 
     private void initConfig(IDefProAPI config) {
         try{
@@ -54,7 +54,7 @@ public class Board extends JPanel implements ActionListener {
             boardHeight = config.getIntegerValueOf("boardHeight");
             flipperSpeed = config.getIntegerValueOf("flipperSpeed");
         } catch (Exception e){
-            System.out.println("There was an error loading the config, loading default values:" + e);
+            System.out.println("There was an error loading the config, loading default values: " + e.getMessage());
             // Default in case config file fails.
             balStartX = 570;
             balStartY = 520;
@@ -63,7 +63,6 @@ public class Board extends JPanel implements ActionListener {
             flipperSpeed = 3;
         }
     }
-
 
     private void initBoard() {
 
@@ -179,12 +178,13 @@ public class Board extends JPanel implements ActionListener {
     private void paintComponent(Graphics2D g) {
         super.paintComponent(g);
 
+        if (score.getScore() >= 10000){
+            inGame = false;
+        }
+
         if (inGame) {
-
             drawObjects(g);
-
         } else {
-
             drawGameOver(g);
         }
 
@@ -193,12 +193,6 @@ public class Board extends JPanel implements ActionListener {
 
     private void drawObjects(Graphics2D g) {
         g.setColor(Color.WHITE);
-        AffineTransform identity_left = new AffineTransform();
-        AffineTransform trans_left = new AffineTransform();
-
-        AffineTransform identity_right = new AffineTransform();
-        AffineTransform trans_right = new AffineTransform();
-
 
         if (ballSprite.isVisible()) {
             g.drawImage(ballSprite.getImage(), (int) ballSprite.getPosition().x, (int) ballSprite.getPosition().y, this);
@@ -223,19 +217,28 @@ public class Board extends JPanel implements ActionListener {
             g.draw(flipper);
         }
 
-        g.setColor(Color.WHITE);
+        drawScore(g);
     }
 
     private void drawGameOver(Graphics2D g) {
+        String msg = "Game Over, your score: " + score.getScore();
+        Font big = new Font("Verdana", Font.BOLD, 30);
+        FontMetrics fm = getFontMetrics(big);
 
-        String msg = "Try again";
-        Font small = new Font("Helvetica", Font.BOLD, 14);
+        g.setColor(Color.white);
+        g.setFont(big);
+        g.drawString(msg, (boardWidth - fm.stringWidth(msg)) / 2,boardHeight / 2);
+    }
+
+    private void drawScore(Graphics2D g) {
+        String msg = score.getScore() + "";
+        Font small = new Font("Verdana", Font.BOLD, 14);
         FontMetrics fm = getFontMetrics(small);
 
         g.setColor(Color.white);
         g.setFont(small);
-        g.drawString(msg, (boardWidth - fm.stringWidth(msg)) / 2,
-                boardHeight / 2);
+        g.drawString("Score:", 20, 20);
+        g.drawString(msg, 150 - fm.stringWidth(msg),20);
     }
 
     @Override
@@ -248,6 +251,9 @@ public class Board extends JPanel implements ActionListener {
     private void inGame() {
         if (!inGame) {
             timer.stop();
+        }
+        else {
+            score.addToScore(10);
         }
     }
 
@@ -313,7 +319,6 @@ public class Board extends JPanel implements ActionListener {
             if (key == KeyEvent.VK_RIGHT) {
                 rightPressed = true;
             }
-
             if (key == KeyEvent.VK_A) {
                 ballSprite.getBall().applyForce(new Vec2d(-3000.0,0.0));
             }
