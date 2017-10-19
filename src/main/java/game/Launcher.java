@@ -12,16 +12,20 @@ public class Launcher extends JFrame {
 
     public Launcher() {
 
-        initUI();
+        try{
+            initUI();
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
 
     }
 
-    private IDefProAPI getConfig() {
+    private IDefProAPI getConfig() throws Exception {
         String path = "config.txt";
         return APIProvider.getAPI(path);
     }
 
-    private void initUI() {
+    private void initUI() throws Exception {
 
         add(new Board(getConfig()));
 
