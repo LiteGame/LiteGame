@@ -3,7 +3,7 @@ package physics;
 import java.awt.*;
 
 /**
- * Created by JoeyH on 2017-10-05.
+ * General interface for anything that needs to collide.
  */
 public interface Collidable {
     void tick();

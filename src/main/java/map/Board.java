@@ -2,7 +2,6 @@ package map;
 
 import items.BallSprite;
 import nl.tu.delft.defpro.api.IDefProAPI;
-import org.omg.PortableInterceptor.INACTIVE;
 import physics.*;
 
 import javax.swing.*;
@@ -34,6 +33,7 @@ public class Board extends JPanel implements ActionListener {
     private Map<Integer, Line2D> flippers = new HashMap<>();
 
     private BallSprite ballSprite;
+    private BallSprite ballSprite2;
     private Environment physicsEnvironment;
 
     private int balStartX;
@@ -134,10 +134,13 @@ public class Board extends JPanel implements ActionListener {
 
         arcs.put(2015, new Arc2D.Double(250, 50, 375, 300, 0, 180, Arc2D.OPEN));
 
-        ballSprite = new BallSprite(new Ball(physicsEnvironment, new Vec2d(balStartX,balStartY), 10.0, 5.0, 4000));
-        ballSprite.loadImage("resources/dot.png");
-        ballSprite.setVisible(true);
-        physicsEnvironment.spawnObject(ballSprite.getBall());
+        //ballSprite = new BallSprite(new Ball(physicsEnvironment, new Vec2d(balStartX,balStartY), 10.0, 5.0));
+        //ballSprite.loadImage("resources/dot.png");
+        //ballSprite.setVisible(true);
+        BallFactory fact = new BallFactory(physicsEnvironment, new Vec2d(balStartX,balStartY));
+        ballSprite = fact.create().getSprite();
+        ballSprite2 = fact.create(new Vec2d(balStartX-150, balStartY-50), 10,5).getSprite();
+        //physicsEnvironment.spawnObject(ballSprite.getBall());
         physicsEnvironment.setGravity(9.81);
         //flipperRight = new Flipper_Right(550,400, -195);
         //flipperLeft = new Flipper_Left(200, 400, 15);
@@ -158,23 +161,21 @@ public class Board extends JPanel implements ActionListener {
         timer.start();
     }
 
-    /**
-    public Set getLines() {
+    public Map getLines() {
         return lines;
     }
 
-    public Set getEllipses() {
+    public Map getEllipses() {
         return ellipses;
     }
 
-    public Set getArcs() {
+    public Map getArcs() {
         return arcs;
     }
 
-    public Set getFlippers() {
+    public Map getFlippers() {
         return flippers;
     }
-     */
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -209,6 +210,10 @@ public class Board extends JPanel implements ActionListener {
             g.drawImage(ballSprite.getImage(), (int) ballSprite.getPosition().x, (int) ballSprite.getPosition().y, this);
         }
 
+        if (ballSprite2.isVisible()) {
+            g.drawImage(ballSprite2.getImage(), (int) ballSprite2.getPosition().x, (int) ballSprite2.getPosition().y, this);
+        }
+
         for (Map.Entry<Integer, Line2D> line: lines.entrySet()) {
             g.draw(line.getValue());
         }
@@ -228,7 +233,7 @@ public class Board extends JPanel implements ActionListener {
             physicsEnvironment.spawnStaticObject(new PhysicsShape(flipper));
             g.draw(flipper);
         }
-         */
+         **/
 
         g.setColor(Color.WHITE);
     }
