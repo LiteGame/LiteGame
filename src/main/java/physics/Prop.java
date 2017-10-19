@@ -40,6 +40,10 @@ public class Prop implements Collidable {
         return new Ellipse2D.Double(pos.x,pos.y,0,0);
     }
 
+    public Integer getID() {
+        return null;
+    }
+
     public Vec2d getPosition() {
         return position;
     }

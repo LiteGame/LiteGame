@@ -29,9 +29,9 @@ class CollisionsTest {
         arc = new Arc2D.Double(-50,-50,100,100, 0, 90, Arc2D.OPEN);
         normalVector = new Vec2d(0,1);
 
-        collidables.add(new PhysicsShape(line));
-        collidables.add(new PhysicsShape(ellipse));
-        collidables.add(new PhysicsShape(arc));
+        collidables.add(new PhysicsShape(1000, line));
+        collidables.add(new PhysicsShape(2000, ellipse));
+        collidables.add(new PhysicsShape(3000, arc));
 
         prop = new Ball(environment, new Vec2d(50,50), 10, 5);
         prop.setVelocity(new Vec2d(0,-5));

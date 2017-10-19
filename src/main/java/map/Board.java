@@ -2,6 +2,7 @@ package map;
 
 import items.BallSprite;
 import nl.tu.delft.defpro.api.IDefProAPI;
+import org.omg.PortableInterceptor.INACTIVE;
 import physics.*;
 
 import javax.swing.*;
@@ -12,7 +13,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.*;
 import java.awt.geom.Ellipse2D;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class Board extends JPanel implements ActionListener {
@@ -25,10 +28,10 @@ public class Board extends JPanel implements ActionListener {
     private Boolean leftPressed = false;
     private Boolean rightPressed = false;
 
-    private Set<Line2D> lines = new HashSet<>();
-    private Set<Ellipse2D> ellipses = new HashSet<>();
-    private Set<Arc2D> arcs = new HashSet<>();
-    private Set<Line2D> flippers = new HashSet<>();
+    private Map<Integer, Line2D> lines = new HashMap<>();
+    private Map<Integer, Ellipse2D> ellipses = new HashMap<>();
+    private Map<Integer, Arc2D> arcs = new HashMap<>();
+    private Map<Integer, Line2D> flippers = new HashMap<>();
 
     private BallSprite ballSprite;
     private Environment physicsEnvironment;
@@ -77,59 +80,59 @@ public class Board extends JPanel implements ActionListener {
         physicsEnvironment = new Environment();
 
         //side shutters
-        lines.add(new Line2D.Double(295,600,295,670));
-        lines.add(new Line2D.Double(295,670,340,720));
-        lines.add(new Line2D.Double(555,600,555,670));
-        lines.add(new Line2D.Double(555,670,510,720));
+        lines.put(1000, new Line2D.Double(295,600,295,670));
+        lines.put(1001, new Line2D.Double(295,670,340,720));
+        lines.put(1002, new Line2D.Double(555,600,555,670));
+        lines.put(1003, new Line2D.Double(555,670,510,720));
 
         //side shapes
-        lines.add(new Line2D.Double(310.5,527,250,200));
-        arcs.add(new Arc2D.Double(250, 560, 60, 100, 90, 90, Arc2D.OPEN));
-        arcs.add(new Arc2D.Double(250, 500, 60, 60, -90, 100, Arc2D.OPEN));
-        lines.add(new Line2D.Double(539.5,527,600,200));
-        arcs.add(new Arc2D.Double(540, 560, 60, 100, 90, -90, Arc2D.OPEN));
-        arcs.add(new Arc2D.Double(540, 500, 60, 60, -90, -100, Arc2D.OPEN));
+        lines.put(1004, new Line2D.Double(310.5,527,250,200));
+        arcs.put(2000, new Arc2D.Double(250, 560, 60, 100, 90, 90, Arc2D.OPEN));
+        arcs.put(2001, new Arc2D.Double(250, 500, 60, 60, -90, 100, Arc2D.OPEN));
+        lines.put(1005, new Line2D.Double(539.5,527,600,200));
+        arcs.put(2002, new Arc2D.Double(540, 560, 60, 100, 90, -90, Arc2D.OPEN));
+        arcs.put(2003, new Arc2D.Double(540, 500, 60, 60, -90, -100, Arc2D.OPEN));
 
         //top middle arcs
-        arcs.add(new Arc2D.Double(325, 61.5, 100, 112, 105, -105, Arc2D.OPEN));
-        arcs.add(new Arc2D.Double(425, 53.5, 100, 120, 75, 105, Arc2D.OPEN));
+        arcs.put(2004, new Arc2D.Double(325, 61.5, 100, 112, 105, -105, Arc2D.OPEN));
+        arcs.put(2005, new Arc2D.Double(425, 53.5, 100, 120, 75, 105, Arc2D.OPEN));
 
         //left shutter top
-        arcs.add(new Arc2D.Double(275, 120, 160, 150, 150, 40, Arc2D.OPEN));
-        arcs.add(new Arc2D.Double(280, 110, 160, 150, 90, 70, Arc2D.OPEN));
-        arcs.add(new Arc2D.Double(320, 110, 80, 80, 90, -70, Arc2D.OPEN));
+        arcs.put(2006, new Arc2D.Double(275, 120, 160, 150, 150, 40, Arc2D.OPEN));
+        arcs.put(2007, new Arc2D.Double(280, 110, 160, 150, 90, 70, Arc2D.OPEN));
+        arcs.put(2008, new Arc2D.Double(320, 110, 80, 80, 90, -70, Arc2D.OPEN));
 
         //right shutter top
-        arcs.add(new Arc2D.Double(400, 100, 200, 200, 0, 90, Arc2D.OPEN));
-        arcs.add(new Arc2D.Double(460, 100, 80, 80, 90, 85, Arc2D.OPEN));
+        arcs.put(2009, new Arc2D.Double(400, 100, 200, 200, 0, 90, Arc2D.OPEN));
+        arcs.put(2010, new Arc2D.Double(460, 100, 80, 80, 90, 85, Arc2D.OPEN));
 
         //Bumper left side
-        lines.add(new Line2D.Double(325,625,325,665));
-        lines.add(new Line2D.Double(344.3969,622,360,680));
-        lines.add(new Line2D.Double(325,665,347.5,687.5));
-        arcs.add(new Arc2D.Double(325, 615, 20, 20, 20, 160, Arc2D.OPEN));
-        arcs.add(new Arc2D.Double(345, 675, 15, 15, 35, -180, Arc2D.OPEN));
+        lines.put(1006, new Line2D.Double(325,625,325,665));
+        lines.put(1007, new Line2D.Double(344.3969,622,360,680));
+        lines.put(1008, new Line2D.Double(325,665,347.5,687.5));
+        arcs.put(2011, new Arc2D.Double(325, 615, 20, 20, 20, 160, Arc2D.OPEN));
+        arcs.put(2012, new Arc2D.Double(345, 675, 15, 15, 35, -180, Arc2D.OPEN));
 
         //Bumper right side
-        lines.add(new Line2D.Double(525,625,525,665));
-        lines.add(new Line2D.Double(505.6031,622,490,680));
-        lines.add(new Line2D.Double(525,665,502.5,687.5));
-        arcs.add(new Arc2D.Double(505, 615, 20, 20, 160, -160, Arc2D.OPEN));
-        arcs.add(new Arc2D.Double(490, 675, 15, 15, 145, 180, Arc2D.OPEN));
+        lines.put(1009, new Line2D.Double(525,625,525,665));
+        lines.put(1010, new Line2D.Double(505.6031,622,490,680));
+        lines.put(1011, new Line2D.Double(525,665,502.5,687.5));
+        arcs.put(2013, new Arc2D.Double(505, 615, 20, 20, 160, -160, Arc2D.OPEN));
+        arcs.put(2014, new Arc2D.Double(490, 675, 15, 15, 145, 180, Arc2D.OPEN));
 
         // Outside
-        ellipses.add(new Ellipse2D.Double(550,200,0.1,0.1));
-        lines.add(new Line2D.Double(250,750,625,750));
-        lines.add(new Line2D.Double(250, 750, 250, 200));
-        lines.add(new Line2D.Double(600, 750, 600, 200));
-        lines.add(new Line2D.Double(625, 200, 625, 750));
+        ellipses.put(3000, new Ellipse2D.Double(550,200,0.1,0.1));
+        lines.put(1012, new Line2D.Double(250,750,625,750));
+        lines.put(1013, new Line2D.Double(250, 750, 250, 200));
+        lines.put(1014, new Line2D.Double(600, 750, 600, 200));
+        lines.put(1015, new Line2D.Double(625, 200, 625, 750));
         //bumpers middle
-        ellipses.add(new Ellipse2D.Double(420,220,50,50));
-        ellipses.add(new Ellipse2D.Double(370,170,40,40));
-        ellipses.add(new Ellipse2D.Double(340,260,60,60));
-        ellipses.add(new Ellipse2D.Double(475,150,80,80));
+        ellipses.put(3001, new Ellipse2D.Double(420,220,50,50));
+        ellipses.put(3002, new Ellipse2D.Double(370,170,40,40));
+        ellipses.put(3003, new Ellipse2D.Double(340,260,60,60));
+        ellipses.put(3004, new Ellipse2D.Double(475,150,80,80));
 
-        arcs.add(new Arc2D.Double(250, 50, 375, 300, 0, 180, Arc2D.OPEN));
+        arcs.put(2015, new Arc2D.Double(250, 50, 375, 300, 0, 180, Arc2D.OPEN));
 
         ballSprite = new BallSprite(new Ball(physicsEnvironment, new Vec2d(balStartX,balStartY), 10.0, 5.0));
         ballSprite.loadImage("resources/dot.png");
@@ -139,22 +142,23 @@ public class Board extends JPanel implements ActionListener {
         //flipperRight = new Flipper_Right(550,400, -195);
         //flipperLeft = new Flipper_Left(200, 400, 15);
 
-        for (Line2D line : lines) {
-            physicsEnvironment.spawnStaticObject(new PhysicsShape(line));
+        for (Map.Entry<Integer, Line2D> line: lines.entrySet()) {
+            physicsEnvironment.spawnStaticObject(new PhysicsShape(line.getKey(), line.getValue()));
         }
 
-        for (Ellipse2D ellipse : ellipses) {
-            physicsEnvironment.spawnStaticObject(new PhysicsShape(ellipse));
+        for (Map.Entry<Integer, Ellipse2D> ellipse: ellipses.entrySet()) {
+            physicsEnvironment.spawnStaticObject(new PhysicsShape(ellipse.getKey(), ellipse.getValue()));
         }
 
-        for (Arc2D arc : arcs) {
-            physicsEnvironment.spawnStaticObject(new PhysicsShape(arc));
+        for (Map.Entry<Integer, Arc2D> arc: arcs.entrySet()) {
+            physicsEnvironment.spawnStaticObject(new PhysicsShape(arc.getKey(), arc.getValue()));
         }
 
         timer = new Timer(10, this);
         timer.start();
     }
 
+    /**
     public Set getLines() {
         return lines;
     }
@@ -170,6 +174,7 @@ public class Board extends JPanel implements ActionListener {
     public Set getFlippers() {
         return flippers;
     }
+     */
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -204,24 +209,26 @@ public class Board extends JPanel implements ActionListener {
             g.drawImage(ballSprite.getImage(), (int) ballSprite.getPosition().x, (int) ballSprite.getPosition().y, this);
         }
 
-        for (Line2D line : lines) {
-            g.draw(line);
+        for (Map.Entry<Integer, Line2D> line: lines.entrySet()) {
+            g.draw(line.getValue());
         }
 
-        for (Ellipse2D ellipse : ellipses) {
-            g.draw(ellipse);
+        for (Map.Entry<Integer, Ellipse2D> ellipse: ellipses.entrySet()) {
+            g.draw(ellipse.getValue());
         }
 
-        for (Arc2D arc : arcs) {
-            g.draw(arc);
+        for (Map.Entry<Integer, Arc2D> arc: arcs.entrySet()) {
+            g.draw(arc.getValue());
         }
 
 
+        /**
         flippers = updateFlippers();
         for (Line2D flipper : flippers) {
             physicsEnvironment.spawnStaticObject(new PhysicsShape(flipper));
             g.draw(flipper);
         }
+         */
 
         g.setColor(Color.WHITE);
     }

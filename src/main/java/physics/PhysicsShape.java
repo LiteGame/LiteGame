@@ -3,15 +3,19 @@ package physics;
 import java.awt.*;
 
 public class PhysicsShape implements Collidable {
-    Shape shape;
+    private Shape shape;
+    private Integer id;
 
-    public PhysicsShape(Shape shape) {
+    public PhysicsShape(Integer id, Shape shape) {
         this.shape = shape;
+        this.id = id;
     }
 
     public Shape getShape() {
         return shape;
     }
+
+    public Integer getID() { return id; }
 
     public void setShape(Shape shape) {
         this.shape = shape;

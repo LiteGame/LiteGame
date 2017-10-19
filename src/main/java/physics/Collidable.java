@@ -9,4 +9,5 @@ public interface Collidable {
     void tick();
 
     Shape getShape();
+    Integer getID();
 }

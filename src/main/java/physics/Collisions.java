@@ -183,6 +183,7 @@ public class Collisions {
                 case "java.awt.geom.Arc2D":
                     Arc2D arc = (Arc2D) collidable.getShape();
                     checkCollisionPropArc(prop, arc);
+                    System.out.println(collidable.getID());
                     break;
             }
         }
