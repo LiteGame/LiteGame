@@ -92,8 +92,8 @@ public class Vec2d {
      */
     public Vec2d rotate(double angle) {
         double newX = (this.x * Math.cos(angle) - this.y * Math.sin(angle));
-        double newY = (this.x * Math.sin(angle) - this.y * Math.cos(angle));
-        return new Vec2d(newX,newY);
+        double newY = (this.x * Math.sin(angle) + this.y * Math.cos(angle));
+        return new Vec2d(newX,newY).round(15);
     }
 
     /**

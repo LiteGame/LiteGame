@@ -48,4 +48,20 @@ public class Vec2dTest {
         Vec2d res = new Vec2d(1.0,1.0);
         Assertions.assertEquals(res,ans);
     }
+
+    @Test
+    public void testScale() {
+        Vec2d v1 = new Vec2d(1.0,1.0);
+        Vec2d ans = v1.scale(0.5);
+        Vec2d res = new Vec2d(0.5,0.5);
+        Assertions.assertEquals(res,ans);
+    }
+
+    @Test
+    public void testRotate() {
+        Vec2d v1 = new Vec2d(1.0,0.0);
+        Vec2d ans = v1.rotate((Math.PI/2));
+        Vec2d res = new Vec2d(0,1.0);
+        Assertions.assertEquals(res,ans);
+    }
 }
