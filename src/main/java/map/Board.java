@@ -184,7 +184,7 @@ public class Board extends JPanel implements ActionListener {
     private void paintComponent(Graphics2D g) {
         super.paintComponent(g);
 
-        if (score.getScore() >= 10000){
+        if (score.getScore() >= 1000000){
             inGame = false;
         }
 

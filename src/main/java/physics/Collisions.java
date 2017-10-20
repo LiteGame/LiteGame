@@ -1,4 +1,6 @@
 package physics;
+import items.Score;
+
 import java.awt.geom.*;
 import java.util.Set;
 
@@ -9,10 +11,13 @@ public class Collisions {
      * ellipse that is slightly larger such that it intersects the middle of the prop/ball at collision. This point of
      * collision at the outer ellipse is then scaled back onto the original ellipse. Then at this point we calculate
      * the normal vector later used for bouncing.
-     * @param prop This prop is now assumed to be the pinball
-     * @param ellipse This is the ellipse the pinball can collide with
+     *
+     * @param prop    This prop is now assumed to be the pinball
+     * @param collidable This is the ellipse the pinball can collide with
      */
-    private static void checkCollisionPropEllipse(Prop prop, Ellipse2D ellipse) {
+    private static void checkCollisionPropEllipse(Prop prop, Collidable collidable) {
+        Ellipse2D ellipse = (Ellipse2D) collidable.getShape();
+
         // Is the vector from the corner of the screen to the middle of the ball.
         Vec2d zeroToBall = prop.getPosition().plus(new Vec2d(5, 5));
         // This is the position vector of the bumper.
@@ -34,10 +39,10 @@ public class Collisions {
         if (distanceBallEllipse.getMagnitude() < (5 + radiusEllipse)) {
 
             // Calculate the normal vector
-            Vec2d normalVectorOutside = new Vec2d(distanceBallEllipse.x * bOutside/aOutside, distanceBallEllipse.y * aOutside/bOutside);
-            normalVectorOutside = normalVectorOutside.scale(1/normalVectorOutside.getMagnitude());
+            Vec2d normalVectorOutside = new Vec2d(distanceBallEllipse.x * bOutside / aOutside, distanceBallEllipse.y * aOutside / bOutside);
+            normalVectorOutside = normalVectorOutside.scale(1 / normalVectorOutside.getMagnitude());
 
-            bounce(prop, normalVectorOutside);
+            bounce(prop, normalVectorOutside, collidable);
             // Here we move the ball in the direction of the normal vector until the prop doesn't intersect the ellipse anymore.
             while (distanceBallEllipse.getMagnitude() <= (5 + radiusEllipse)) {
                 zeroToBall = prop.getPosition().plus(new Vec2d(5, 5));
@@ -49,10 +54,13 @@ public class Collisions {
 
     /**
      * This function check collision between the ball and any line.
+     *
      * @param prop This prop is now assumed to be the pinball
-     * @param line This is the line the pinball can collide with
+     * @param collidable This is the line the pinball can collide with
      */
-    private static void checkCollisionPropLine(Prop prop, Line2D line) {
+    private static void checkCollisionPropLine(Prop prop, Collidable collidable) {
+        Line2D line = (Line2D) collidable.getShape();
+
         // Is the vector from the corner of the screen to the middle of the ball.
         Vec2d zeroToBall = prop.getPosition().plus(new Vec2d(5, 5));
         // The vector from the corner of the screen to the edge of the line.
@@ -72,7 +80,7 @@ public class Collisions {
         // If the distance between the line and the ball is smaller than the radius, we get a collision.
         if (distanceBallLine.getMagnitude() < 5 && bUnit.scale(a.dot(bUnit)).getMagnitude() < b.getMagnitude() && angle < Math.PI * 0.25) {
 
-            bounce(prop, normalVector);
+            bounce(prop, normalVector, collidable);
             // Keep the prop moving until it doesn't intersect the line anymore.
             while (distanceBallLine.getMagnitude() <= 5) {
                 zeroToBall = prop.getPosition().plus(new Vec2d(5, 5));
@@ -87,10 +95,13 @@ public class Collisions {
      * these ellipses are such that they intersect the middle of the prop/ball at collision. The normal vectors locations
      * are calculated on these inner and outer ellipses and then scaled back onto the original ellipse. Finally the
      * normal vector is calculated at this point on the actual ellipse.
+     *
      * @param prop This prop is now assumed to be the pinball
-     * @param arc This is the arc the pinball can collide with
+     * @param collidable  This is the arc the pinball can collide with
      */
-    private static void checkCollisionPropArc(Prop prop, Arc2D arc) {
+    private static void checkCollisionPropArc(Prop prop, Collidable collidable) {
+        Arc2D arc = (Arc2D) collidable.getShape();
+
         Vec2d zeroToBall = prop.getPosition().plus(new Vec2d(5, 5));
         Vec2d zeroToCenterArc = new Vec2d(arc.getCenterX(), arc.getCenterY());
         Vec2d distanceBallArc = zeroToBall.minus(zeroToCenterArc);
@@ -119,46 +130,106 @@ public class Collisions {
             if (distanceBallArc.getMagnitude() > radiusInsideEllipse) {
 
                 // Calculate the normal vector
-                Vec2d normalVectorInside = new Vec2d(distanceBallArc.x * bInside/aInside, distanceBallArc.y * aInside/bInside);
-                normalVectorInside = normalVectorInside.scale(-1/normalVectorInside.getMagnitude());
+                Vec2d normalVectorInside = new Vec2d(distanceBallArc.x * bInside / aInside, distanceBallArc.y * aInside / bInside);
+                normalVectorInside = normalVectorInside.scale(-1 / normalVectorInside.getMagnitude());
                 Vec2d normalVectorLocation = distanceBallArc.minus(normalVectorInside.scale(5));
-                Vec2d normalVectorInwards = new Vec2d(normalVectorLocation.x * b/a, normalVectorLocation.y * a/b);
-                normalVectorInwards = normalVectorInwards.scale(-1/normalVectorInwards.getMagnitude());
+                Vec2d normalVectorInwards = new Vec2d(normalVectorLocation.x * b / a, normalVectorLocation.y * a / b);
+                normalVectorInwards = normalVectorInwards.scale(-1 / normalVectorInwards.getMagnitude());
 
                 // Collision on the inside.
-                bounce(prop, normalVectorInwards);
+                bounce(prop, normalVectorInwards, collidable);
             }
             // Else if its on the outside.
         } else if (distanceBallArc.getMagnitude() > radiusEllipse && arc.containsAngle(angle)) {
             if (distanceBallArc.getMagnitude() < radiusOutsideEllipse) {
 
                 // Calculate the normal vector
-                Vec2d normalVectorOutside = new Vec2d(distanceBallArc.x * bOutside/aOutside, distanceBallArc.y * aOutside/bOutside);
-                normalVectorOutside = normalVectorOutside.scale(-1/normalVectorOutside.getMagnitude());
+                Vec2d normalVectorOutside = new Vec2d(distanceBallArc.x * bOutside / aOutside, distanceBallArc.y * aOutside / bOutside);
+                normalVectorOutside = normalVectorOutside.scale(-1 / normalVectorOutside.getMagnitude());
                 Vec2d normalVectorLocation = distanceBallArc.minus(normalVectorOutside.scale(5));
-                Vec2d normalVectorOutwards = new Vec2d(normalVectorLocation.x * b/a, normalVectorLocation.y * a/b);
-                normalVectorOutwards = normalVectorOutwards.scale(1/normalVectorOutwards.getMagnitude());
+                Vec2d normalVectorOutwards = new Vec2d(normalVectorLocation.x * b / a, normalVectorLocation.y * a / b);
+                normalVectorOutwards = normalVectorOutwards.scale(1 / normalVectorOutwards.getMagnitude());
 
                 // Collision on the outside.
-                bounce(prop, normalVectorOutwards);
+                bounce(prop, normalVectorOutwards, collidable);
             }
         }
     }
 
     /**
+     * Checks for collision between two props/balls. It is important that when there is collision, both balls bounce
+     * not just one.
+     * @param prop1 first prop/ball
+     * @param prop2 second prop/ball
+     */
+     private static void checkCollisionPropProp(Prop prop1, Prop prop2){
+     Vec2d zeroToProp1 = prop1.getPosition().plus(new Vec2d(5,5));
+     Vec2d zeroToProp2 = prop2.getPosition().plus(new Vec2d(5,5));
+
+     Vec2d prop1ToProp2 = zeroToProp1.minus(zeroToProp2);
+     Vec2d normalVector = prop1ToProp2.scale(1/prop1ToProp2.getMagnitude());
+
+     if (prop1ToProp2.getMagnitude() < 10){
+         bounceTwoProps(prop1, prop2, normalVector);
+        }
+     }
+
+
+    /**
      * This function bounces the prop like a mirror.
-     * @param prop This prop is now assumed to be the pinball
+     *
+     * @param prop         This prop is now assumed to be the pinball
      * @param normalVector This is the normal vector that is used to determine what direction to bounce to
      */
-    private static void bounce(Prop prop, Vec2d normalVector) {
+    private static void bounce(Prop prop, Vec2d normalVector, Collidable collidable) {
         // Calculate the deceleration with a collision duration of 1 tick.
         Vec2d deceleration = prop.getVelocity().scale(-100);
         // F = m*a
         Vec2d reactionForce = deceleration.scale(prop.getMass());
         // Normal force is the reaction force projected onto the normal vector of the object we bounce from.
         Vec2d normalForce = normalVector.scale(reactionForce.dot(normalVector));
+        // Scale the force based on the action.
+        double scale = specialAction(collidable);
         // Apply the force and let the physics do its magic.
-        prop.applyForce(normalForce.scale(2));
+        prop.applyForce(normalForce.scale(scale));
+        //
+    }
+
+    /**
+     * Bounce two props/balls off each other
+     * @param prop1 first prop/ball
+     * @param prop2 second prop/ball
+     * @param normalVector normal vector used to determine what direction to bounce to.
+     */
+    private static void bounceTwoProps(Prop prop1, Prop prop2, Vec2d normalVector) {
+        // Calculate the deceleration with a collision duration of 1 tick.
+        Vec2d deceleration1 = prop1.getVelocity().scale(-100);
+        Vec2d deceleration2 = prop1.getVelocity().scale(-100);
+        // F = m*a
+        Vec2d reactionForce1 = deceleration1.scale(prop1.getMass());
+        Vec2d reactionForce2 = deceleration2.scale(prop2.getMass());
+        // Normal force is the reaction force projected onto the normal vector of the object we bounce from.
+        Vec2d normalForce1 = normalVector.scale(reactionForce1.dot(normalVector));
+        Vec2d normalForce2 = normalVector.scale(reactionForce2.dot(normalVector.scale(-1)));
+        // Apply the force and let the physics do its magic.
+        prop1.applyForce(normalForce1.scale(2));
+        prop2.applyForce(normalForce2.scale(2));
+    }
+
+    /**
+     * Does a special action based on what the prop collides with.
+     * @param collidable the collidable involved in the collision.
+     * @return a double that represents by how much the force should be scaled with.
+     */
+    private static double specialAction(Collidable collidable){
+        switch (collidable.getID().toString().charAt(0)){
+            case '3':
+                Score.getInstance().addToScore(500);
+                System.out.println("Added 500 score");
+                return 2.5;
+            default:
+                return 2;
+        }
     }
 
 
@@ -169,23 +240,23 @@ public class Collisions {
      */
     public static void checkCollision(Prop prop, Set<Collidable> collidables) {
         for (Collidable collidable : collidables) {
-            String objectName = collidable.getShape().toString().split("\\$")[0];
-            switch (objectName) {
-                // Every case has its own collision method.
-                case "java.awt.geom.Line2D":
-                    Line2D line = (Line2D) collidable.getShape();
-                    checkCollisionPropLine(prop, line);
+            String collisionPair = prop.getID().toString().charAt(0) + "," + collidable.getID().toString().charAt(0);
+            // Every case has its own collision method.
+            switch (collisionPair) {
+                case "4,1": // Ball,Line
+                    checkCollisionPropLine(prop, collidable);
                     break;
-                case "java.awt.geom.Ellipse2D":
-                    Ellipse2D ellipse = (Ellipse2D) collidable.getShape();
-                    if ((int)prop.getID() != (int)collidable.getID()){
-                        System.out.println(prop.getID().toString() + collidable.getID().toString());
-                        checkCollisionPropEllipse(prop, ellipse);}
+                case "4,2": // Ball,Arc
+                    checkCollisionPropArc(prop, collidable);
                     break;
-                case "java.awt.geom.Arc2D":
-                    Arc2D arc = (Arc2D) collidable.getShape();
-                    checkCollisionPropArc(prop, arc);
+                case "4,3": // Ball,Ellipse
+                    checkCollisionPropEllipse(prop, collidable);
                     break;
+                case "4,4": //Ball,Ball
+                    // Prevent checking collision with itself.
+                    if (!prop.getID().equals(collidable.getID())){
+                        checkCollisionPropProp(prop, (Prop)collidable);
+                }
             }
         }
     }

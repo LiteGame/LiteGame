@@ -2,8 +2,6 @@ package physics;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
 /**
  * Represents a physics point object.
@@ -28,6 +26,9 @@ public class Prop implements Collidable {
      */
     private double mass = 1;
 
+    /**
+     * This identity number of this prop.
+     */
     private int id;
 
     public Prop(Environment e, Vec2d position, double mass, int id) {
