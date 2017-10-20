@@ -25,8 +25,8 @@ public class EnvironmentTest {
 
     @Before
     public void setup() {
-        environment.spawnDynamicObject(ball);
-        environment.spawnStaticObject(ball);
+        environment.spawnObject(ball);
+        environment.spawnObject(ball);
     }
 
     @Test

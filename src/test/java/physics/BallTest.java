@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BallTest {
     @Test
     public void testGetShape() {
-        Ball ball = new Ball(null, new Vec2d(0.0,0.0), 10.0, 5.0);
+        Ball ball = new Ball(null, new Vec2d(0.0,0.0), 10.0, 5.0, 1);
         Ellipse2D ballShape = new Ellipse2D.Double(-5.0,-5.0,10.0,10.0);
         Assert.assertEquals(ballShape,ball.getShape());
     }

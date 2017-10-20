@@ -19,14 +19,14 @@ public class PhysicsShapeTest {
     @Test
     public void testGetShape() {
         Line2D shape = new Line2D.Double(0.0,0.0,1.0,1.0);
-        PhysicsShape pshape = new PhysicsShape(shape);
+        PhysicsShape pshape = new PhysicsShape(1, shape);
         Assert.assertEquals(shape,pshape.getShape());
     }
 
     @Test
     public void testSetShape() {
         Line2D shape1 = new Line2D.Double(0.0,0.0,1.0,1.0);
-        PhysicsShape pshape = new PhysicsShape(shape1);
+        PhysicsShape pshape = new PhysicsShape(2, shape1);
         Line2D shape2 = new Line2D.Double(0.0,0.0,2.0,2.0);
         pshape.setShape(shape2);
         Assert.assertEquals(shape2,pshape.getShape());

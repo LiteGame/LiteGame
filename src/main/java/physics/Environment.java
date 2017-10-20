@@ -30,8 +30,7 @@ public class Environment {
      */
     private double drag = 1;
 
-    private Set<Collidable> staticObjects = new HashSet<>();
-    private Set<Collidable> dynamicObjects = new HashSet<>();
+    private Set<Collidable> allObjects = new HashSet<>();
     private Map<Prop, Map<Vec2d,Integer>> forces = new HashMap<>();
 
     public double getGravity() {
@@ -62,18 +61,13 @@ public class Environment {
         Map<Prop, Map<Vec2d,Integer>> newForces = new HashMap<>();
         forces = newForces;
 
-        for(Collidable p : dynamicObjects) {
+        for(Collidable p : allObjects) {
             p.tick();
         }
     }
 
-    public Set<Collidable> getStaticObjects() { return staticObjects; }
+    public void spawnObject(Collidable newObject) {allObjects.add(newObject);}
 
-    public Set<Collidable> getDynamicObjects() { return dynamicObjects; }
-
-    public void spawnStaticObject(Collidable newObject) {
-        staticObjects.add(newObject);
-    }
-
-    public void spawnDynamicObject(Collidable newObject) { dynamicObjects.add(newObject); }
+    public Set<Collidable> getObjects() { return allObjects; }
 }
+
