@@ -86,6 +86,17 @@ public class Vec2d {
     }
 
     /**
+     * Rotates a vector around the point of origin.
+     * @param angle The angle to rotate with.
+     * @return The rotated vector.
+     */
+    public Vec2d rotate(double angle) {
+        double newX = (this.x * Math.cos(angle) - this.y * Math.sin(angle));
+        double newY = (this.x * Math.sin(angle) + this.y * Math.cos(angle));
+        return new Vec2d(newX,newY).round(15);
+    }
+
+    /**
      * Returns a {@link String} representation of this vector.
      * @return The representation.
      */

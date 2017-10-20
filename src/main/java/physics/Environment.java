@@ -1,5 +1,6 @@
 package physics;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -29,7 +30,8 @@ public class Environment {
      */
     private double drag = 1;
 
-    private List<Collidable> objects = new ArrayList<>();
+    private Set<Collidable> staticObjects = new HashSet<>();
+    private Set<Collidable> dynamicObjects = new HashSet<>();
     private Map<Prop, Map<Vec2d,Integer>> forces = new HashMap<>();
 
     public double getGravity() {
@@ -60,16 +62,18 @@ public class Environment {
         Map<Prop, Map<Vec2d,Integer>> newForces = new HashMap<>();
         forces = newForces;
 
-        for(Collidable p : objects) {
+        for(Collidable p : dynamicObjects) {
             p.tick();
         }
     }
 
-    public List<Collidable> getObjects() {
-        return objects;
+    public Set<Collidable> getStaticObjects() { return staticObjects; }
+
+    public Set<Collidable> getDynamicObjects() { return dynamicObjects; }
+
+    public void spawnStaticObject(Collidable newObject) {
+        staticObjects.add(newObject);
     }
 
-    public void spawnObject(Collidable newObject) {
-        objects.add(newObject);
-    }
+    public void spawnDynamicObject(Collidable newObject) { dynamicObjects.add(newObject); }
 }
